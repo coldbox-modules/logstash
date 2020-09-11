@@ -1,0 +1,35 @@
+{
+	"name" 		: "cblogstash",
+	"version"   : "1.0.0",
+    "location"  : "http://downloads.ortussolutions.com/ortussolutions/coldbox-modules/cblogstash/@build.version@/cblogstash-@build.version@.zip",
+	"author" 	: "Jon Clausen <jclausen@ortussolutions.com",
+	"homepage"	: "https://github.com/coldbox-modules/cblogstash",
+	"documentation"		: "https://github.com/coldbox-modules/cblogstash",
+	"repository"		: { "type" : "git", "url" : "https://github.com/coldbox-modules/cblogstash" },
+	"bugs" : "https://github.com/coldbox-modules/cblogstash",
+	"shortDescription"	: "A logstash module for the coldbox platform",
+	"slug"		: "cblogstash",
+	"type"		: "modules",
+	"keywords":"elasticsearch,logstash",
+	"license"			: [
+		{ "type" : "Apache2", "url" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
+	],
+	"contributors"		: [
+		"Jon Clausen <jclausen@ortussolutions.com>"
+	],
+	"dependencies" 	:{
+		"cbelasticsearch":"^2.0.1",
+		"cbrestbasehandler":"^1.0.0",
+		"JSONToRC" : "^1.0.0"
+	},
+	"ignore":[
+        "**/.*",
+        "test-harness"
+    ],
+	"scripts":{
+        "release":"recipe build/release.boxr",
+        "format":"cfformat run models/,test-harness/tests/ --overwrite",
+        "format:watch":"cfformat watch models/,test-harness/tests/",
+        "format:check":"cfformat check models/,test-harness/tests/"
+    }
+}
