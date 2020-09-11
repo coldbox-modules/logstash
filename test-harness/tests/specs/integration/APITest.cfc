@@ -22,10 +22,10 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		super.beforeAll();
 		// do your own stuff here
 
-		debug( application.cbController.getModuleService().isModuleRegistered( "cblogstash" ) );
+		debug( application.cbController.getModuleService().isModuleRegistered( "logstash" ) );
 
-		var moduleSettings = application.cbController.getSettingStructure().moduleSettings.cblogstash;
-		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.cblogstash );
+		var moduleSettings = application.cbController.getSettingStructure().moduleSettings.logstash;
+		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.logstash );
 
 		// create an error message
 		try{
@@ -39,7 +39,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		makePublic( logstashAppender, "getRotationalIndexName", "getRotationalIndexName" );
 
 		variables.logEntry = {
-			"application"  : "cblogstash-test-suite",
+			"application"  : "logstash-test-suite",
 			"index"        :  logstashAppender.getRotationalIndexName(),
 			"release"      : "1",
 			"type"         : "api",
@@ -74,11 +74,11 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			});
 
 			afterEach( function( currentSpec ){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash = variables.baseSettings;
+				application.cbController.getSettingStructure().moduleSettings.logstash = variables.baseSettings;
 			} );
 
 			it( "Tests that the create method will return an invalid event if the configuration is set to disable the API", function(){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.enableAPI = false;
+				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = false;
 
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
@@ -117,8 +117,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			} );
 
 			it( "Tests that the create method will return Authentication failure if the token is incorrect", function(){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.apiAuthToken = createUUID();
+				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
+				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = createUUID();
 
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
@@ -136,8 +136,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			} );
 
 			it( "Tests that the create method can create a log entry", function(){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.apiAuthToken = "";
+				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
+				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = "";
 
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;

@@ -21,7 +21,7 @@ component {
 	this.mappings[ "/root" ] = rootPath;
 
 	// UPDATE THE NAME OF THE MODULE IN TESTING BELOW
-	request.MODULE_NAME = "cblogstash";
+	request.MODULE_NAME = "logstash";
 
 	// The module root path
 	moduleRootPath = reReplaceNoCase( this.mappings[ "/root" ], "#request.module_name#(\\|/)test-harness(\\|/)", "" );
@@ -29,7 +29,7 @@ component {
 	this.mappings[ "/#request.MODULE_NAME#" ] = moduleRootPath & "#request.MODULE_NAME#";
 	this.mappings[ "/cbelasticsearch" ] = this.mappings[ "/root" ] & "modules/cbelasticsearch";
 
-	this.datasource = "cblogstash";
+	this.datasource = "logstash";
 
 	// request start
 	public boolean function onRequestStart( String targetPage ){

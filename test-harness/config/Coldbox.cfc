@@ -65,7 +65,7 @@
 			root  : { levelmax : "DEBUG", appenders : "*" },
 			// Implicit Level Categories
 			info  : [ "coldbox.system" ],
-			debug : [ "cblogstash" ]
+			debug : [ "logstash" ]
 		};
 
 	}

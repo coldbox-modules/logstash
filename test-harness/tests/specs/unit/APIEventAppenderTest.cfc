@@ -3,7 +3,7 @@
 * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
 * responsibility to update the model annotation instantiation path and init your model.
 */
-component extends="coldbox.system.testing.BaseTestCase" model="cblogstash.models.logging.APIEventAppender"{
+component extends="coldbox.system.testing.BaseTestCase" model="logstash.models.logging.APIEventAppender"{
 
 	/*********************************** LIFE CYCLE Methods ***********************************/
 	this.loadColdbox = true;
@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" model="cblogstash.models
 		super.beforeAll();
 
 		// init the model object
-		variables.model = new cblogstash.models.logging.APIEventAppender(
+		variables.model = new logstash.models.logging.APIEventAppender(
 			"EventAppenderTest",
 			{}
 		);
@@ -26,7 +26,7 @@ component extends="coldbox.system.testing.BaseTestCase" model="cblogstash.models
 
 	function run(){
 
-		describe( "cblogstash.models.APIEventAppender Suite", function(){
+		describe( "logstash.models.APIEventAppender Suite", function(){
 			it( "Can create a log message", function(){
 				// create an error for our tests
 				try{

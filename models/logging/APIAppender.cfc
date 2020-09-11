@@ -1,6 +1,6 @@
 component extends="cbelasticsearch.models.logging.LogstashAppender"{
 	property name="hyper" inject="HyperBuilder@Hyper";
-	property name="logStashSettings" inject="coldbox:moduleSettings:cblogstash";
+	property name="logStashSettings" inject="coldbox:moduleSettings:logstash";
 
 	/**
      * Write an entry into the appender.
@@ -9,7 +9,7 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 
 		if( !len( logStashSettings.apiUrl ) ){
 			throw(
-				type="cblogstash.InvalidConfiguration",
+				type="logstash.InvalidConfiguration",
 				message="An API URL has not been configured.  This appender may not be used."
 			);
 		}
@@ -92,7 +92,7 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 			requestObj.send();
 		} catch( any e ){
 			throw(
-				type = "cblogstash.APITransmissionException",
+				type = "logstash.APITransmissionException",
 				message = "There was an error communicating with the LogStash API endpoint.  The message received was #e.message#",
 				errorCode = e.errorCode,
 				extendedInfo = e.stacktrace

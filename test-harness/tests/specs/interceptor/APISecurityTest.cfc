@@ -11,12 +11,12 @@ component extends="coldbox.system.testing.BaseTestCase"{
 	function beforeAll(){
 		super.beforeAll();
 
-		variables.interceptor = new cblogstash.interceptors.APISecurity();
+		variables.interceptor = new logstash.interceptors.APISecurity();
 		variable.interceptor = prepareMock( interceptor )
 									.$( "getController", application.cbController );
 
-		var moduleSettings = application.cbController.getSettingStructure().moduleSettings.cblogstash;
-		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.cblogstash );
+		var moduleSettings = application.cbController.getSettingStructure().moduleSettings.logstash;
+		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.logstash );
 
 	}
 
@@ -29,24 +29,24 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 	function run(){
 
-		describe( "cblogstash.interceptors.APISecurity", function(){
+		describe( "logstash.interceptors.APISecurity", function(){
 
 			beforeEach(function( currentSpec ){
 				setup();
 			});
 
 			afterEach( function( currentSpec ){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash = variables.baseSettings;
+				application.cbController.getSettingStructure().moduleSettings.logstash = variables.baseSettings;
 			} );
 
 			it( "Will override the event if the API is not enabled", function(){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.enableAPI = false;
+				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = false;
 
 				var context=getRequestContext();
 
 				interceptor.preEvent( context, {}, "", context.getCollection(), context.getCollection( private=true ) );
 
-				expect( context.getCurrentEvent() ).toBe( "cblogstash:API.onInvalidHTTPMethod" );
+				expect( context.getCurrentEvent() ).toBe( "logstash:API.onInvalidHTTPMethod" );
 
 			} );
 
@@ -55,20 +55,20 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			} );
 
 			it( "Will override the event if the API token does not match", function(){
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.apiAuthToken = createUUID();
+				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
+				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = createUUID();
 
 				var context=getRequestContext();
 
 				interceptor.preEvent( context, {}, "", context.getCollection(), context.getCollection( private=true ) );
 
-				expect( context.getCurrentEvent() ).toBe( "cblogstash:API.onAuthenticationFailure" );
+				expect( context.getCurrentEvent() ).toBe( "logstash:API.onAuthenticationFailure" );
 			} );
 
 			it( "Will not change the event if allowed", function(){
 
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.cblogstash.apiAuthToken = "";
+				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
+				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = "";
 
 				var context=getRequestContext();
 

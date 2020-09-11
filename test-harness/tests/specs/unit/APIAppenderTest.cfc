@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		super.beforeAll();
 
 
-		variables.model = new cblogstash.models.logging.APIAppender(
+		variables.model = new logstash.models.logging.APIAppender(
 			"APIAppenderTest",
 			{
 				"index" : ".logstash-api-appender-tests",
@@ -58,7 +58,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 	function run(){
 
-		describe( "cblogstash.models.logging.APIAppender Suite", function(){
+		describe( "logstash.models.logging.APIAppender Suite", function(){
 			it( "Can create a log message", function(){
 				// create a test error
 				variables.model.logMessage( variables.loge );

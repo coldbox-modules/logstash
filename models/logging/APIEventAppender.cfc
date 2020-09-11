@@ -8,7 +8,7 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 		ensureIndex();
 		if( isInstanceOf( logEvent, "LogEvent" ) ){
 			throw(
-				type="cblogstash.UsageException",
+				type="logstash.UsageException",
 				message="The logEvent passed to the logMessage function is of an incorrect type.  This appender requires a full log message struct to perform its operation. Try using the `APIAppender` instead."
 			);
 		}

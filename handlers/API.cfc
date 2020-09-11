@@ -1,11 +1,11 @@
 component extends="BaseHandler"{
-	property name="moduleSettings" inject="coldbox:modulesettings:cblogstash";
+	property name="moduleSettings" inject="coldbox:modulesettings:logstash";
 
 	function create( event, rc, prc ){
 
 		if( !structKeyExists( rc, "entry" ) ){
 			throw(
-				type="cblogstash.ExpectationFailedException",
+				type="logstash.ExpectationFailedException",
 				message="The payload provided to the API log creation event did not contain a valid entry"
 			);
 		}
@@ -13,8 +13,8 @@ component extends="BaseHandler"{
 		var configOptions = duplicate( rc.entry );
 		structAppend( configOptions, moduleSettings, false );
 
-		var logger = new cblogstash.models.logging.APIEventAppender(
-			name = "cbLogstash_api_appender",
+		var logger = new logstash.models.logging.APIEventAppender(
+			name = "logstash_api_appender",
 			properties = configOptions
 		);
 

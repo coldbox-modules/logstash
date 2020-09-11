@@ -6,18 +6,18 @@
 component {
 
     // Module Properties
-    this.title 				= "cblogstash";
+    this.title 				= "logstash";
     this.author 			= "Ortus Solutions";
-    this.webURL 			= "https://github.com/coldbox-modules/cblogstash";
+    this.webURL 			= "https://github.com/coldbox-modules/logstash";
     this.description 		= "A logstash module for the Coldbox Platform";
 
     // Model Namespace
-	this.modelNamespace		= "cblogstash";
+	this.modelNamespace		= "logstash";
 
 	this.entrypoint         = "logstash";
 
     // CF Mapping
-    this.cfmapping			= "cblogstash";
+    this.cfmapping			= "logstash";
 
     // Dependencies
     this.dependencies 		= [ "cbelasticsearch" ];
@@ -62,7 +62,7 @@ component {
 
         interceptors = [
             //API Security Interceptor
-            { class="cblogstash.interceptors.APISecurity" }
+            { class="logstash.interceptors.APISecurity" }
 		];
 
 		if( settings.enableAPI ){
@@ -111,7 +111,7 @@ component {
 
         logBoxConfig.appender(
             name 		= 'logstash_appender',
-            class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "cblogstash.models.logging.APIAppender",
+            class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
             properties  = settings,
             levelMin 	= settings.levelMin,
             levelMax 	= settings.levelMax
