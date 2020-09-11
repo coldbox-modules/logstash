@@ -89,42 +89,37 @@ component {
     /**
      * Fired when the module is registered and activated.
      */
-    function onLoad(){
-        if( settings.enableAppenders ){
-            loadAppenders();
-        }
-    }
+    function onLoad(){}
 
     /**
      * Fired when the module is unregistered and unloaded
      */
-    function onUnload(){}
+	function onUnload(){}
 
+	function afterConfigurationLoad(){
+        if( settings.enableAppenders ){
+            loadAppenders();
+        }
+	}
     /**
      * Load LogBox Appenders
      */
     private function loadAppenders(){
-
         // Get config
-        var logBoxConfig 	= logBox.getConfig();
-        var rootConfig 		= logBoxConfig.getRoot();
+		var logBoxConfig 	= logBox.getConfig();
 
-        logBoxConfig.appender(
+		logBox.registerAppender(
             name 		= 'logstash_appender',
             class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
             properties  = settings,
             levelMin 	= settings.levelMin,
             levelMax 	= settings.levelMax
-        );
+		);
 
-        logBoxConfig.root(
-            levelMin = rootConfig.levelMin,
-            levelMax = rootConfig.levelMax,
-            appenders= listAppend( rootConfig.appenders, 'logstash_appender')
-        );
-
-        // Store back config
-        logBox.configure( logBoxConfig );
+		var appenders = logBox.getAppendersMap( 'logstash_appender' );
+    	// Register the appender with the root loggger, and turn the logger on.
+	    var root = logBox.getRootLogger();
+	    root.addAppender( appenders[ 'logstash_appender' ] );
     }
 
 }
