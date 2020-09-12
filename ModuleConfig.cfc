@@ -26,19 +26,30 @@ component {
      * Configure Module
      */
     function configure(){
+		var applicationName = properties.keyExists( "applicationName" )
+                                ? properties.applicationName
+                                : ( server.coldfusion.productname eq "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name );
+
         settings = {
-            "enableAPI" 		: getSystemSetting( "LOGSTASH_ENABLE_API", true ),
-            "enableAppenders" 	: getSystemSetting( "LOGSTASH_ENABLE_APPENDERS", true ),
-            "transmission" 		: getSystemSetting( "LOGSTASH_TRANSMISSION_METHOD", "direct" ),
-            // only used if the transmission setting is `api`
-            "apiUrl" 			: getSystemSetting( "LOGSTASH_API_URL", "" ),
-            // Regex used to whitelist remote hosts allowed to transmit to the API - by default only localhost is allowed to transmit
-            "apiWhitelist" 		: getSystemSetting( "LOGSTASH_API_WHITELIST", "127.0.0.1" ),
-            // a user-provided API token - which must match the token configured on the remote API microservice leave empty if using IP whitelisting
-            "apiAuthToken" 		: getSystemSetting( "LOGSTASH_API_TOKEN", "" ),
-            // Min/Max levels for appender
-            "levelMin" 			: getSystemSetting( "LOGSTASH_LEVEL_MIN", "FATAL" ),
-            "levelMax" 			: getSystemSetting( "LOGSTASH_LEVEL_MAX", "ERROR" )
+			// Whether to enable the API endpoints to receive log messages
+			"enableAPI" 		: getSystemSetting( "LOGSTASH_ENABLE_API", true ),
+			// Whether to automatically enabled log appenders
+			"enableAppenders" 	: getSystemSetting( "LOGSTASH_ENABLE_APPENDERS", true ),
+			// The type of transmission mode for this module - `direct` or `api`
+			"transmission" 		: getSystemSetting( "LOGSTASH_TRANSMISSION_METHOD", "direct" ),
+			// only used if the transmission setting is `api`
+			"apiUrl" 			: getSystemSetting( "LOGSTASH_API_URL", "" ),
+			// Regex used to whitelist remote addresses allowed to transmit to the API - by default only 127.0.0.1 is allowed to transmit messages to the API
+			"apiWhitelist" 		: getSystemSetting( "LOGSTASH_API_WHITELIST", "127.0.0.1" ),
+			// a user-provided API token - which must match the token configured on the remote API microservice leave empty if using IP whitelisting
+			"apiAuthToken" 		: getSystemSetting( "LOGSTASH_API_TOKEN", "" ),
+			// Min/Max levels for the appender
+			"levelMin" 			: getSystemSetting( "LOGSTASH_LEVEL_MIN", "FATAL" ),
+			"levelMax" 			: getSystemSetting( "LOGSTASH_LEVEL_MAX", "ERROR" ),
+			// A closure, which may be used in the configuration to provide custom information. Will be stored in the `userinfo` key in your logstash logs
+			"userInfoUDF"       : function(){ return {}; },
+			// A custom prefix for indices used by the module for logging
+			"indexPrefix"       : getSystemSetting( "LOGSTASH_INDEX_PREFIX", ".logstash-" & lcase( REReplaceNoCase(applicationName, "[^0-9A-Z_]", "_", "all") ) ) )
         };
 
         // Try to look up the release based on a box.json
@@ -108,10 +119,14 @@ component {
         // Get config
 		var logBoxConfig 	= logBox.getConfig();
 
+		var appenderProperties = duplicate( settings );
+		appenderProperties.index = indexPrefix;
+
+
 		logBox.registerAppender(
             name 		= 'logstash_appender',
             class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
-            properties  = settings,
+            properties  = appenderProperties,
             levelMin 	= settings.levelMin,
             levelMax 	= settings.levelMax
 		);
