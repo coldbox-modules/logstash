@@ -34,7 +34,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			variables.errorEntry = e;
 		}
 
-		var logstashAppender = createMock( "cbelasticsearch.models.logging.logstashAppender" );
+		var logstashAppender = createMock( "cbelasticsearch.models.logging.LogstashAppender" );
 		logstashAppender.init( "MockLogstashAppender" );
 		makePublic( logstashAppender, "getRotationalIndexName", "getRotationalIndexName" );
 
