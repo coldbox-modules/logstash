@@ -33,12 +33,12 @@ box install logstash
 
 Since this module utilizes other module dependencies, which are designed to work within the Coldbox framework, it may only be used within the context of a Coldbox application.  By just installing the module, the following things will happen automatically for you:
 
-* A Logstash LogBox appender we registered to capture all messages of FATAL or ERROR severity
+* A Logstash LogBox appender will be registered to capture all messages of FATAL or ERROR severity
 * An `onException` interceptor will be registered to log all errors that ColdBox sees.
 
 ## Configuration
 
-The `cbElasticsearch` module is bundled in the installation of this module so, if you are utilizing a direct connection ( see below ), you will need to first add a configuration to your `config/Coldbox.cfc` for your elasticsearch connection.  Instructions to configure this module may be found [here](https://cbelasticsearch.ortusbooks.com/configuration).
+The `cbElasticsearch` module is bundled in the installation of this module so, if you are utilizing a [direct connection](#transmission-modes), you will need to first configure the Elasticsearch connection in `config/Coldbox.cfc`.  See [cbElasticsearch configuration](https://cbelasticsearch.ortusbooks.com/configuration).
 
 The default configuration structure for the module looks like this.  Note that environment variables or java properties may be provided to configure the module with adding any additional code to your `config/Coldbox.cfc` file:
 
@@ -83,7 +83,7 @@ The environment variable names are noted above in the `getSystemSetting` methods
 
 ### Transmission Modes
 
-As noted above, this module may be used with either a direct connection to an elasticsearch server ( configured in your Coldbox application or via the environment ) or it can transmit to a microservice version of itself via API.   There are two valid transmission modes:  `direct` ( default ) and `api`.  In the case of the former, messages are logged directly to an Elasticsearch server via the `cbElasticsearch` module.  In the case of the latter, you will need to supply configuration options for the API endpoint to be used in logging messages.
+As noted above, this module may be used with either a direct connection to an elasticsearch server ( configured in your Coldbox application or via environment variables ) or it can transmit to a microservice version of itself via API.   There are two valid transmission modes:  `direct` ( default ) and `api`.  In the case of the former, messages are logged directly to an Elasticsearch server via the `cbElasticsearch` module.  In the case of the latter, you will need to supply configuration options for the API endpoint to be used in logging messages.
 
 For a direct configuration, with no API enabled, our settings would be the following:
 
@@ -147,13 +147,18 @@ Note that the `userInfoUDF` is designed to fail softly - so as to prevent error 
 
 ## Index naming conventions
 
-By default, the indexes created and used by the Logstash module use the following prefix:  `.logstash-[ lower-cased, alphanumeric application name]`.  The `.logstash-` prefix is a convention used by the ELK stack to denote two things:  1. The index is non-public 2. The index contains logs.  Tools like Kibana will automatically filter logging indices by looking for this name. 
+By default, the indexes created and used by the Logstash module use the following prefix:  `.logstash-[ lower-cased, alphanumeric application name]`.  The `.logstash-` prefix is a convention used by the ELK stack to denote two things: 
+
+1. The index is non-public
+2. The index contains logs.
+
+Tools like Kibana will automatically filter logging indices by looking for this name. 
 
 You may change the default prefix used for logging indices with the `indexPrefix` key in the module settings, or by providing a `LOGSTASH_INDEX_PREFIX` environment variable.
 
 ## Appender Configuration
 
-You can configure additional appenders via the `logBox` configuration key in your `config/Coldbox.cfc` file. If you choose not to use the automatically created appenders, this can give you granular control over the log messages and indexes used for different levels.  Let's say we want to disable the creation of automatic appenders, in favor of specific appenders to capture different information.   In this case, let's use two separate indices - one for Errors and one for DEBUG-WARN messages - and transmit them to an API microservice running our Logstash module:
+You can configure additional appenders via the `logBox` configuration key in your `config/Coldbox.cfc` file. If you choose not to use the automatically created appenders, this can give you granular control over the log messages and indexes used for different levels.  Let's say we want to disable the creation of automatic appenders, in favor of specific appenders to capture different information.   In this case, let's use two separate indices - one for `ERROR`s and one for `DEBUG`-`WARN` messages - and transmit them to an API microservice running our Logstash module:
 
 ```js
 logBox = {
