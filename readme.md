@@ -31,7 +31,7 @@ box install logstash
 
 ## ColdBox Installation
 
-Since this module utilizes other module dependencies, which are designed to work within the Coldbox framewor, it may only be used within the context of a Coldbox application.  By just installing the module, the following things will happen automatically for you:
+Since this module utilizes other module dependencies, which are designed to work within the Coldbox framework, it may only be used within the context of a Coldbox application.  By just installing the module, the following things will happen automatically for you:
 
 * A Logstash LogBox appender we registered to capture all messages of FATAL or ERROR severity
 * An `onException` interceptor will be registered to log all errors that ColdBox sees.
