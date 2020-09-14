@@ -26,9 +26,7 @@ component {
      * Configure Module
      */
     function configure(){
-		var applicationName = properties.keyExists( "applicationName" )
-                                ? properties.applicationName
-                                : ( server.coldfusion.productname eq "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name );
+		var applicationName = server.coldfusion.productname == "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name;
 
         settings = {
 			// Whether to enable the API endpoints to receive log messages
