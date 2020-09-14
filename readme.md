@@ -246,9 +246,36 @@ In terms of the fields stored with each log message, a number of fields are auto
 
 Fields typed `keyword` are not searchable, but are exact match fields.  This allows for precise filtering of log messages by, for example, application or level.   Fields typed as `text` are searchable fields in elasticsearch and results matched are scored according to relevancy.  Note that stack traces of error messages are split by line and stored as an array of strings.  The `snapshot` and `event` field objects are only populated with log entries of ERROR or higher.   See above for information on providing data to the `userinfo` field, which is stored as JSON.  This field is stored as text to allow flexibility in storing different types of log message with different types of user info in the index.
 
+## API Usage
+
+You may transmit any data directly to the logstash API, as long as it follows the mapped schema above.  You may even specify a name of the index prefix to be used in the transmission ( the actual index name will have the rotational appender timestamps applied, according to your configured rotation frequency).  This provides you flexibility in storing additional log files, which may or may not be from your CFML application. 
+
+Within your application, the easiest method for transmission is using the API Appender, which will ensure consistent formatting.  Below is an example of a direct transmission schema. The enpoint is configured to accept PUT or POST requests.
+
+*Endpoint Example*
+`( PUT/POST) http://my.logstash.microservice/logstash/api/logs`
+
+*Authorization Header ( if configured in your application )*
+`Authorization:Bearer [my api token]`
+
+*Payload*
+```js
+{
+	"type"        : "custom",
+	"index"       : ".logstash-my-custom-logs"
+	"application" : "myapp",
+	"release"     : "1.0.0",
+	"level"       : "INFO",
+	"category"    : "server",
+	"appendername": "none",
+	"message"     : "My custom log message",
+	"extrainfo"   : "My extra info",
+	"userinfo"    : "My custom user info"
+}
+```
 
 
-
+Logstash provides you with a single source for all logging information. It is especially effective when running your application within distributed or containerized environments, where log messages and/or errors may be generated from multiple servers and sources.
 
 ********************************************************************************
 Copyright Since 2005 ColdBox Framework by Luis Majano and Ortus Solutions, Corp
