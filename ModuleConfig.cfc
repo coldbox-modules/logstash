@@ -118,7 +118,7 @@ component {
 		var logBoxConfig 	= logBox.getConfig();
 
 		var appenderProperties = duplicate( settings );
-		appenderProperties.index = indexPrefix;
+		appenderProperties.index = settings.indexPrefix;
 
 
 		logBox.registerAppender(
