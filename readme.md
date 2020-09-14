@@ -85,6 +85,9 @@ The environment variable names are noted above in the `getSystemSetting` methods
 
 As noted above, this module may be used with either a direct connection to an elasticsearch server ( configured in your Coldbox application or via the environment ) or it can transmit to a microservice version of itself via API.   There are two valid transmission modes:  `direct` ( default ) and `api`.  In the case of the former, messages are logged directly to an Elasticsearch server via the `cbElasticsearch` module.  In the case of the latter, you will need to supply configuration options for the API endpoint to be used in logging messages.
 
+
+#### Direct
+
 For a direct configuration, with no API enabled, our settings would be the following:
 
 ```js
@@ -94,6 +97,8 @@ moduleSettings = {
 	}
 }
 ```
+
+### API
 
 Because direct is the default the above configuration only disables the API.  No need to pass in additional configuration options.
 For an API transmission, our configuration becomes a little more complex:
