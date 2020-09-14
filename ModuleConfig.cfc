@@ -120,13 +120,12 @@ component {
 		var appenderProperties = duplicate( settings );
 		appenderProperties.index = settings.indexPrefix;
 
-
 		logBox.registerAppender(
             name 		= 'logstash_appender',
             class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
             properties  = appenderProperties,
-            levelMin 	= settings.levelMin,
-            levelMax 	= settings.levelMax
+            levelMin 	= logBox.logLevels[ settings.levelMin ],
+            levelMax 	= logBox.logLevels[ settings.levelMax ]
 		);
 
 		var appenders = logBox.getAppendersMap( 'logstash_appender' );
