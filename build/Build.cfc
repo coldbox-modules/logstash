@@ -145,7 +145,7 @@ component{
         print.greenLine( "Updating version identifier to #arguments.version#" ).toConsole();
         command( 'tokenReplace' )
             .params(
-                path = "/#variables.projectBuildDir#/**.@(json|cfc)",
+                path = "/#variables.projectBuildDir#/**.json,/#variables.projectBuildDir#/**.cfc",
                 token = "@build.version@",
                 replacement = arguments.version
             )
@@ -154,7 +154,7 @@ component{
         print.greenLine( "Updating build identifier to #arguments.buildID#" ).toConsole();
         command( 'tokenReplace' )
             .params(
-                path = "/#variables.projectBuildDir#/**.@(json|cfc)",
+                path = "/#variables.projectBuildDir#/**.json,/#variables.projectBuildDir#/**.cfc",
                 token = ( arguments.branch == "master" ? "@build.number@" : "+@build.number@" ),
                 replacement = ( arguments.branch == "master" ? arguments.buildID : "-snapshot" )
             )
