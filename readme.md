@@ -211,6 +211,10 @@ In terms of the fields stored with each log message, a number of fields are auto
 		"type"  : "date",
 		"format": "date_time_no_millis"
 	},
+	"@timestamp"	  : {
+		"type"  : "date",
+		"format": "date_time_no_millis"
+	},
 	"message"     : {
 		"type" : "text",
 		"fields": {
@@ -222,6 +226,13 @@ In terms of the fields stored with each log message, a number of fields are auto
 	},
 	"extrainfo"   : { "type" : "text" },
 	"stacktrace"  : { "type" : "text" },
+	"host" : {
+		"type" : "object",
+		"properties" : {
+			"name" : { "type" : "keyword" },
+			"hostnamename" : { "type" : "keyword" }
+		}
+	},
 	"snapshot"    : {
 		"type" : "object",
 		"properties" : {
@@ -245,11 +256,14 @@ In terms of the fields stored with each log message, a number of fields are auto
 			"environment"  : { "type" : "keyword" }
 		}
 	},
-	"userinfo" : { "type" : "text" }
+	"userinfo" : { "type" : "text" },
+	"frames"  : { "type" : "text" }
 }
 ```
 
-Fields typed `keyword` are not searchable, but are exact match fields.  This allows for precise filtering of log messages by, for example, application or level.   Fields typed as `text` are searchable fields in elasticsearch and results matched are scored according to relevancy.  Note that stack traces of error messages are split by line and stored as an array of strings.  The `snapshot` and `event` field objects are only populated with log entries of ERROR or higher.   See above for information on providing data to the `userinfo` field, which is stored as JSON.  This field is stored as text to allow flexibility in storing different types of log message with different types of user info in the index.
+Fields typed `keyword` are not searchable, but are exact match fields.  This allows for precise filtering of log messages by, for example, application or level.   Fields typed as `text` are searchable fields in elasticsearch and results matched are scored according to relevancy.  Note that stack traces of error messages are split by line and stored as an array of strings.  The `snapshot` and `event` field objects are only populated with log entries of ERROR or higher.   See above for information on providing data to the `userinfo` field, which is stored as JSON.  This field is stored as text to allow flexibility in storing different types of log message with different types of user info in the index. 
+
+_Note: There are two timestamp fields which contain the same data:  `timestamp` and `@timestamp`.  The latter is simply provided for easy automation with the default configuration for Logstash logs in Kibana.  [Read more on the ELK stack here](https://www.elastic.co/what-is/elk-stack)._
 
 ## API Usage
 
