@@ -32,7 +32,8 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 			"stacktrace"   : logEvent.keyExists( "stacktrace" )
 								? ( isSimpleValue( logEvent.stacktrace ) ? listToArray( logEvent.stacktrace, "#chr(13)##chr(10)#" ) : logEvent.stacktrace )
 								: javacast( "null", 0 ),
-			"extrainfo"    : logEvent.extrainfo ?: javacast( "null", 0 )
+			"extrainfo"    : logEvent.extrainfo ?: javacast( "null", 0 ),
+			"frames"       : logEvent.frames ?: javacast( "null", 0 )
 		};
 
 		logEntry[ "snapshot" ] = logEvent.snapshot ?: {};
