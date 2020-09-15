@@ -186,7 +186,11 @@ component{
         command( 'docbox generate' )
             .params(
                 "source"               =  "models",
-                "mapping"              =  "models",
+				"mapping"              =  "models",
+				"mappings"             {
+					"/cbelasticsearch" : "#variables.projectBuildDir#/test-harness/modules/cbelasticsearch"
+					"/logstash" : "#variables.projectBuildDir#"
+				},
                 "strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
                 "strategy-outputDir"   = arguments.outputDir
             )
