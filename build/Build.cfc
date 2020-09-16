@@ -187,7 +187,7 @@ component{
             .params(
                 "source"               =  "models",
 				"mapping"              =  "models",
-				"mappings"             {
+				"mappings"             = {
 					"/cbelasticsearch" : "#variables.projectBuildDir#/test-harness/modules/cbelasticsearch",
 					"/logstash" : "#variables.projectBuildDir#"
 				},
