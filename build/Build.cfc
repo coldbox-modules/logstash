@@ -188,7 +188,7 @@ component{
                 "source"               =  "models",
 				"mapping"              =  "models",
 				"mappings"             {
-					"/cbelasticsearch" : "#variables.projectBuildDir#/test-harness/modules/cbelasticsearch"
+					"/cbelasticsearch" : "#variables.projectBuildDir#/test-harness/modules/cbelasticsearch",
 					"/logstash" : "#variables.projectBuildDir#"
 				},
                 "strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
