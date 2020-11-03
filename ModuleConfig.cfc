@@ -47,7 +47,11 @@ component {
 			// A closure, which may be used in the configuration to provide custom information. Will be stored in the `userinfo` key in your logstash logs
 			"userInfoUDF"       : function(){ return {}; },
 			// A custom prefix for indices used by the module for logging
-			"indexPrefix"       : getSystemSetting( "LOGSTASH_INDEX_PREFIX", ".logstash-" & lcase( REReplaceNoCase( applicationName, "[^0-9A-Z_]", "_", "all" ) ) )
+			"indexPrefix"       : getSystemSetting( "LOGSTASH_INDEX_PREFIX", ".logstash-" & lcase( REReplaceNoCase( applicationName, "[^0-9A-Z_]", "_", "all" ) ) ),
+			// The number of shards to use for new logstash indices
+			"indexShards"       : getSystemSetting( "LOGSTASH_INDEX_SHARDS", 2 ),
+			// The number of replicas to use for new logstash indexes
+			"indexReplicas"     : getSystemSetting( "LOGSTASH_INDEX_REPLICAS", 0 )
         };
 
         // Try to look up the release based on a box.json
@@ -125,7 +129,7 @@ component {
             class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
             properties  = appenderProperties,
             levelMin 	= logBox.logLevels[ settings.levelMin ],
-            levelMax 	= logBox.logLevels[ settings.levelMax ]
+			levelMax 	= logBox.logLevels[ settings.levelMax ]
 		);
 
 		var appenders = logBox.getAppendersMap( 'logstash_appender' );
