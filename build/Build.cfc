@@ -188,6 +188,7 @@ component{
 				"source"               =  "models",
 				"mapping"              =  "models",
 				"mappings:/cbelasticsearch" = "#variables.projectBuildDir#/test-harness/modules/cbelasticsearch",
+				"mappings:/logstash" = "#variables.projectBuildDir#",
 				"strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
 				"strategy-outputDir"   = arguments.outputDir
 			)
