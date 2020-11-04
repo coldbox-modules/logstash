@@ -51,7 +51,8 @@ component {
 			// The number of shards to use for new logstash indices
 			"indexShards"       : getSystemSetting( "LOGSTASH_INDEX_SHARDS", 2 ),
 			// The number of replicas to use for new logstash indexes
-			"indexReplicas"     : getSystemSetting( "LOGSTASH_INDEX_REPLICAS", 0 )
+			"indexReplicas"     : getSystemSetting( "LOGSTASH_INDEX_REPLICAS", 0 ),
+			"rotation"          : getSystemSetting( "LOGSTASH_INDEX_ROTATION", "weekly" )
         };
 
         // Try to look up the release based on a box.json
