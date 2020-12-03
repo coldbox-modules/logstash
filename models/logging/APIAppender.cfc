@@ -77,28 +77,7 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 			}
 		}
 
-		var stringify = [ "frames", "extrainfo", "stacktrace" ];
-
-        stringify.each( function( key ){
-            if( logObj.keyExists( key ) && !isSimpleValue( logObj[ key ] ) ){
-                logObj[ key ] = variables.util.toJSON( logObj[ key ] );
-            }
-		} );
-
-        // Attempt to create a signature for grouping
-        if( !logObj.keyExists( "signature" ) ){
-            var signable = [ "application", "type", "level", "message", "stacktrace", "frames" ];
-            var sigContent = "";
-            signable.each( function( key ){
-                if( logObj.keyExists( key ) ){
-                    sigContent &= logObj[ key ];
-                }
-            } );
-            if( len( sigContent ) ){
-                logObj[ "signature" ] = hash( sigContent );
-            }
-
-        }
+		preflightLogEntry( logObj );
 
 		var requestObj = hyper.new()
 				.setMethod( "POST" )

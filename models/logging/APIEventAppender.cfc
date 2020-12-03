@@ -42,28 +42,8 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 									? ( !isSimpleValue( logEvent.userinfo ) ? application.wirebox.getInstance( "Util@cbelasticsearch" ).toJSON( logEvent.userInfo ) : logEvent.userInfo )
 									: "";
 
-		var stringify = [ "frames", "extrainfo", "stacktrace" ];
 
-        stringify.each( function( key ){
-            if( logEntry.keyExists( key ) && !isSimpleValue( logEntry[ key ] ) ){
-                logEntry[ key ] = variables.util.toJSON( logEntry[ key ] );
-            }
-		} );
-
-        // Attempt to create a signature for grouping
-        if( !logEntry.keyExists( "signature" ) ){
-            var signable = [ "application", "type", "level", "message", "stacktrace", "frames" ];
-            var sigContent = "";
-            signable.each( function( key ){
-                if( logEntry.keyExists( key ) ){
-                    sigContent &= logEntry[ key ];
-                }
-            } );
-            if( len( sigContent ) ){
-                logEntry[ "signature" ] = hash( sigContent );
-            }
-
-        }
+		preflightLogEntry( logEntry );
 
 		newDocument().new(
 			index=getRotationalIndexName(),
