@@ -96,20 +96,20 @@ deploy:
     acl: public_read
 
   # API Docs Deployment
-  - provider: s3
-    on:
-      branch:
-        - master
-        - development
-      condition: "$ENGINE = lucee@5"
-    skip_cleanup: true
-    #AWS Credentials need to be set in Travis
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_ACCESS_SECRET
-    bucket: "apidocs.ortussolutions.com"
-    local-dir: $TRAVIS_BUILD_DIR/.tmp/apidocs
-    upload-dir: coldbox-modules/$MODULE_ID/$TARGET_VERSION
-    acl: public_read
+  # - provider: s3
+  #   on:
+  #     branch:
+  #       - master
+  #       - development
+  #     condition: "$ENGINE = lucee@5"
+  #   skip_cleanup: true
+  #   #AWS Credentials need to be set in Travis
+  #   access_key_id: $AWS_ACCESS_KEY
+  #   secret_access_key: $AWS_ACCESS_SECRET
+  #   bucket: "apidocs.ortussolutions.com"
+  #   local-dir: $TRAVIS_BUILD_DIR/.tmp/apidocs
+  #   upload-dir: coldbox-modules/$MODULE_ID/$TARGET_VERSION
+  #   acl: public_read
 
   # Github Release only on Master
   - provider: releases
