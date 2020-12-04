@@ -13,8 +13,6 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 		variables.customIndex = "logstash-api-appender-tests";
 
-		getInstance( "Client@cbelasticsearch" ).deleteIndex( variables.customIndex );
-
 		variables.model = new logstash.models.logging.APIAppender(
 			"APIAppenderTest",
 			{
@@ -28,9 +26,12 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			}
 		);
 
+
 		makePublic( variables.model, "getRotationalIndexName", "getRotationalIndexName" );
 
 		debug( variables.model.getRotationalIndexName() );
+
+		getInstance( "Client@cbelasticsearch" ).deleteIndex( variables.model.getRotationalIndexName() );
 
 		variables.model.onRegistration();
 
@@ -64,7 +65,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				// create a test error
 				variables.model.logMessage( variables.loge );
 
-				sleep( 1100 );
+				sleep( 5100 );
 
 				debug( variables.model.getRotationalIndexName() );
 
