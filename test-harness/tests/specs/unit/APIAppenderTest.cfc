@@ -15,7 +15,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		variables.model = new logstash.models.logging.APIAppender(
 			"APIAppenderTest",
 			{
-				"index" : ".logstash-api-appender-tests",
+				"index" : "logstash-api-appender-tests",
 				"releaseVersion" : "1.0.0",
 				"userInfoUDF" : function(){
 					return {

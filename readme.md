@@ -63,7 +63,7 @@ moduleSettings = {
 		// A closure, which may be used in the configuration to provide custom information. Will be stored in the `userinfo` key in your logstash logs
 		"userInfoUDF"       : function(){ return {}; },
 		// A custom prefix for indices used by the module for logging
-		"indexPrefix"       : getSystemSetting( "LOGSTASH_INDEX_PREFIX", ".logstash-" & lcase( REReplaceNoCase(applicationName, "[^0-9A-Z_]", "_", "all") ) ) )
+		"indexPrefix"       : getSystemSetting( "LOGSTASH_INDEX_PREFIX", "logstash-" & lcase( REReplaceNoCase(applicationName, "[^0-9A-Z_]", "_", "all") ) ) )
 	}
 }
 ```
@@ -152,7 +152,7 @@ Note that the `userInfoUDF` is designed to fail softly - so as to prevent error 
 
 ## Index naming conventions
 
-By default, the indexes created and used by the Logstash module use the following prefix:  `.logstash-[ lower-cased, alphanumeric application name]`.  The `.logstash-` prefix is a convention used by the ELK stack to denote two things:  1. The index is non-public 2. The index contains logs.  Tools like Kibana will automatically filter logging indices by looking for this name. 
+By default, the indexes created and used by the Logstash module use the following prefix:  `logstash-[ lower-cased, alphanumeric application name]`.  The `logstash-` prefix is a convention used by the ELK stack to denote two things:  1. The index is non-public 2. The index contains logs.  Tools like Kibana will automatically filter logging indices by looking for this name. 
 
 You may change the default prefix used for logging indices with the `indexPrefix` key in the module settings, or by providing a `LOGSTASH_INDEX_PREFIX` environment variable.
 
@@ -174,7 +174,7 @@ logBox = {
 			"properties" : {
 				"apiURL" : getSystemSetting( "LOGSTASH_API_URL" ),
 				"apiToken" : getSystemSetting( "LOGSTASH_API_TOKEN" ),
-				"index" : ".logstash-errors-myapp",
+				"index" : "logstash-errors-myapp",
 				"levelMin" : "FATAL",
 				"levelMax" : "ERROR"
 			}
@@ -184,7 +184,7 @@ logBox = {
 			"properties" : {
 				"apiURL" : getSystemSetting( "LOGSTASH_API_URL" ),
 				"apiToken" : getSystemSetting( "LOGSTASH_API_TOKEN" ),
-				"index" : ".logstash-debugger-myapp",
+				"index" : "logstash-debugger-myapp",
 				"levelMin" : "WARN",
 				"levelMax" : "DEBUG"
 			}
@@ -281,7 +281,7 @@ Within your application, the easiest method for transmission is using the API Ap
 ```js
 {
 	"type"        : "custom",
-	"index"       : ".logstash-my-custom-logs"
+	"index"       : "logstash-my-custom-logs"
 	"application" : "myapp",
 	"release"     : "1.0.0",
 	"level"       : "INFO",
