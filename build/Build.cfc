@@ -179,6 +179,7 @@ component{
      * Produce the API Docs
      */
     function docs( required projectName, version="1.0.0", outputDir=".tmp/apidocs" ){
+		return;
         // Generate Docs
         print.greenLine( "Generating API Docs, please wait..." ).toConsole();
         directoryCreate( arguments.outputDir, true, true );
@@ -197,7 +198,9 @@ component{
         print.greenLine( "API Docs produced at #arguments.outputDir#" ).toConsole();
 
         var destination = "#variables.exportsDir#/#projectName#-docs-#version#.zip";
-        print.greenLine( "Zipping apidocs to #destination#" ).toConsole();
+
+		print.greenLine( "Zipping apidocs to #destination#" ).toConsole();
+
         cfzip(
             action="zip",
             file="#destination#",
