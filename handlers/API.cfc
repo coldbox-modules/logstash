@@ -13,6 +13,8 @@ component extends="BaseHandler"{
 		var configOptions = duplicate( rc.entry );
 		structAppend( configOptions, moduleSettings, false );
 
+		param configOptions.index = moduleSettings.indexPrefix;
+
 		var logger = new logstash.models.logging.APIEventAppender(
 			name = "logstash_api_appender",
 			properties = configOptions
@@ -23,4 +25,5 @@ component extends="BaseHandler"{
 		prc.response.setData( { "accepted" : true, "error" : false } ).setStatusCode( 201 );
 
 	}
+	
 }
