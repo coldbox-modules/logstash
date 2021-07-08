@@ -2,7 +2,7 @@
 
 # Welcome to the Logstash Module
 
-This module provides a common interface for sending Logstash logs to elasticsearch.  The module may be used with either a direct connection to an Elasticsearch server or may be installed as a client-ony module, which connects to a separate instance running this module as a microservice.
+This module provides a common interface for sending Logstash logs to elasticsearch.  The module may be used with either a direct connection to an Elasticsearch server or may be installed as a client-only module, which connects to a separate instance running this module as a microservice.
 
 ## LICENSE
 
