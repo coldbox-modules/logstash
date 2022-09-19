@@ -1,0 +1,12 @@
+{
+    "gitbook": "3.2.3",
+    "title": "Logstash",
+    "author": "Ortus Solutions",
+    "description": "Logstash Logbox Appender for the Coldbox Framework",
+    "language": "en",
+    "root": "./build/docs",
+    "structure": {
+        "readme": "Introduction.md",
+        "summary": "Summary.md"
+    }
+}

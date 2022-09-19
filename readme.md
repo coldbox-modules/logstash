@@ -17,7 +17,7 @@ This module provides a common interface for sending Logstash logs to elasticsear
 
 ## SYSTEM REQUIREMENTS
 
-- Adobe ColdFusion 2016+
+- Adobe ColdFusion 2018+
 - Lucee 5
 
 ## Instructions

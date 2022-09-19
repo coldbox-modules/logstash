@@ -29,6 +29,7 @@ component{
             "build",
             "test-harness",
 			"docker-compose.yml",
+			"book.json",
             ".DS_Store",
             ".git"
         ];
