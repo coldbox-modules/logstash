@@ -6,7 +6,7 @@ This module provides a common interface for sending Logstash logs to elasticsear
 
 ## LICENSE
 
-Apache License, Version 2.0.
+[Apache-2.0](https://opensource.org/licenses/Apache-2.0)
 
 ## IMPORTANT LINKS
 
