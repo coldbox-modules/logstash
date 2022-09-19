@@ -20,6 +20,7 @@ jobs:
       ELASTICSEARCH_HOST: 127.0.0.1
       ELASTICSEARCH_PORT: 9200
       ELASTICSEARCH_VERSION: 7.17.2
+      LOGSTASH_API_URL: http://localhost:60299/logstash/api/logs
     strategy:
       fail-fast: true
       matrix:
