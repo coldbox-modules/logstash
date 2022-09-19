@@ -28,6 +28,7 @@ component{
             ".tmp",
             "build",
             "test-harness",
+			"docker-compose.yml",
             ".DS_Store",
             ".git"
         ];
