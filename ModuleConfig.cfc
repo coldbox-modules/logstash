@@ -29,6 +29,8 @@ component {
 		var applicationName = server.coldfusion.productname == "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name;
 
         settings = {
+			// The name of this application, which will allow for grouping of logs
+			"applicationName" 	: getSystemSetting( "LOGSTASH_APPLICATION_NAME", server.coldfusion.productname eq "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name ),
 			// Whether to enable the API endpoints to receive log messages
 			"enableAPI" 		: getSystemSetting( "LOGSTASH_ENABLE_API", true ),
 			// Whether to automatically enabled log appenders

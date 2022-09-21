@@ -2,7 +2,7 @@
 
 ## Appender Configuration
 
-You can configure additional appenders via the `logBox` configuration key in your `config/Coldbox.cfc` file. If you choose not to use the automatically created appenders, this can give you granular control over the log messages and indexes used for different levels.  Let's say we want to disable the creation of automatic appenders, in favor of specific appenders to capture different information.   In this case, let's use two separate indices - one for Errors and one for DEBUG-WARN messages - and transmit them to an API microservice running our Logstash module:
+You can configure additional appenders via the `logBox` configuration key in your `config/Coldbox.cfc` file. If you choose not to use the automatically created appenders, this can give you granular control over the log messages and indexes used for different levels.  Let's say we want to disable the creation of automatic appenders, in favor of specific appenders to capture different information.   In this case, let's use two separate indices - one for `ERROR`s and one for `DEBUG`-`WARN` messages - and transmit them to an API microservice running our Logstash module:
 
 ```js
 logBox = {
