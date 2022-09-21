@@ -6,7 +6,7 @@ Apache License, Version 2.0.
 Instructions
 ============
 
-This module provides a common interface for sending Logstash logs to elasticsearch.  The module may be used with either a direct connection to an Elasticsearch server or may be installed as a client-ony module, which connects to a separate instance running either this module as a microservice or a or [Stachebox](https://stachebox.ortusbooks.com) instance.
+This module provides a common interface for sending Logstash logs to elasticsearch.  The module may be used with either a direct connection to an Elasticsearch server or may be installed as a client-only module, which connects to a separate instance running either this module as a microservice or a or [Stachebox](https://stachebox.ortusbooks.com) instance.
 
 ## LICENSE
 
