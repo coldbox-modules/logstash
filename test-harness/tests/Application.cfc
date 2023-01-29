@@ -28,8 +28,8 @@ component {
 	this.mappings[ "/moduleroot" ] = moduleRootPath;
 	this.mappings[ "/#request.MODULE_NAME#" ] = moduleRootPath & "#request.MODULE_NAME#";
 	this.mappings[ "/cbelasticsearch" ] = this.mappings[ "/root" ] & "modules/cbelasticsearch";
+	this.mappings[ "/hyper" ] = this.mappings[ "/cbelasticsearch" ] & "modules/hyper";
 
-	this.datasource = "logstash";
 
 	// request start
 	public boolean function onRequestStart( String targetPage ){

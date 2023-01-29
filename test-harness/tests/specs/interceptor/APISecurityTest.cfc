@@ -12,11 +12,12 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		super.beforeAll();
 
 		variables.interceptor = new logstash.interceptors.APISecurity();
+		getWirebox().autowire( interceptor );
 		variable.interceptor = prepareMock( interceptor )
 									.$( "getController", application.cbController );
 
-		var moduleSettings = application.cbController.getSettingStructure().moduleSettings.logstash;
-		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.logstash );
+		var moduleSettings = getWirebox().getInstance( "coldbox:moduleSettings:logstash" );
+		variables.baseSettings = duplicate( getWirebox().getInstance( "coldbox:moduleSettings:logstash" ) );
 
 	}
 
@@ -36,11 +37,12 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			});
 
 			afterEach( function( currentSpec ){
-				application.cbController.getSettingStructure().moduleSettings.logstash = variables.baseSettings;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = "";
 			} );
 
 			it( "Will override the event if the API is not enabled", function(){
-				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = false;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = false;
 
 				var context=getRequestContext();
 
@@ -55,8 +57,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			} );
 
 			it( "Will override the event if the API token does not match", function(){
-				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = createUUID();
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = createUUID();
 
 				var context=getRequestContext();
 
@@ -67,8 +69,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 			it( "Will not change the event if allowed", function(){
 
-				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = "";
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = "";
 
 				var context=getRequestContext();
 

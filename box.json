@@ -1,6 +1,6 @@
 {
     "name":"logstash",
-    "version":"1.2.2",
+    "version":"2.0.0",
     "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/logstash/@build.version@/logstash-@build.version@.zip",
     "author":"Jon Clausen <jclausen@ortussolutions.com",
     "homepage":"https://github.com/coldbox-modules/logstash",
@@ -38,5 +38,10 @@
         "format:watch":"cfformat watch models/,test-harness/tests/",
         "format:check":"cfformat check models/,test-harness/tests/",
         "harness:install":"install --force && cd test-harness && install --force"
+    },
+    "installPaths":{
+        "cbelasticsearch":"modules/cbelasticsearch/",
+        "cbrestbasehandler":"modules/cbrestbasehandler/",
+        "JSONToRC":"modules/JSONToRC/"
     }
 }

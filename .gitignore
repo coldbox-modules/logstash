@@ -11,6 +11,9 @@ test-harness/testbox/**
 test-harness/logs/**
 test-harness/modules/**
 
+modules/*
+dev/*
+
 build/results.json
 changelog-latest.md
 

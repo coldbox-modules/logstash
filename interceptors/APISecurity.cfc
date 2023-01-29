@@ -1,8 +1,7 @@
 component{
+	property name="moduleSettings" inject="coldbox:moduleSettings:logstash";
 
 	void function preEvent( event, interceptData, buffer, rc, prc ) eventPattern="^logstash:api*\."{
-		// we do not inject this setting for interceptor testability
-		var moduleSettings = getController().getSettingStructure().moduleSettings.logstash;
 
 		if( !moduleSettings.enableAPI  ){
 			event.overrideEvent( "logstash:API.onInvalidHTTPMethod");

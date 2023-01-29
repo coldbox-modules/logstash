@@ -24,8 +24,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 		debug( application.cbController.getModuleService().isModuleRegistered( "logstash" ) );
 
-		var moduleSettings = application.cbController.getSettingStructure().moduleSettings.logstash;
-		variables.baseSettings = duplicate( application.cbController.getSettingStructure().moduleSettings.logstash );
+		var moduleSettings = getWirebox().getInstance( "coldbox:moduleSettings:logstash" );
+		variables.baseSettings = duplicate( moduleSettings );
 
 		// create an error message
 		try{
@@ -74,11 +74,12 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			});
 
 			afterEach( function( currentSpec ){
-				application.cbController.getSettingStructure().moduleSettings.logstash = variables.baseSettings;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = "";
 			} );
 
 			it( "Tests that the create method will return an invalid event if the configuration is set to disable the API", function(){
-				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = false;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = false;
 
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
@@ -117,8 +118,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			} );
 
 			it( "Tests that the create method will return Authentication failure if the token is incorrect", function(){
-				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = createUUID();
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = createUUID();
 
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
@@ -136,8 +137,8 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			} );
 
 			it( "Tests that the create method can create a log entry", function(){
-				application.cbController.getSettingStructure().moduleSettings.logstash.enableAPI = true;
-				application.cbController.getSettingStructure().moduleSettings.logstash.apiAuthToken = "";
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
+				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = "";
 
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
