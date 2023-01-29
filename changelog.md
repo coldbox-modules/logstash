@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Bump cbElasticsearch version minimum to 2.4.0
 - Bump Coldbox to v6
+- Changes default log index pattern to `logs-` to reflect v8 changes in Kibana/Logstash defaults
 ## [1.2.1] => 2022-09-21
 ### Added
 - Added support for `LOGSTASH_APPLICATION_NAME` environment variable
