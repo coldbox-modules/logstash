@@ -5,13 +5,10 @@
     "private":true,
     "description":"",
     "dependencies":{
-        "coldbox":"^6"
     },
     "devDependencies":{
         "testbox":"^4.1.0",
-        "cbelasticsearch":"^2.1.1",
-        "cbrestbasehandler":"^1.0.0",
-        "JSONToRC":"^1.0.0"
+        "coldbox":"^6"
     },
     "installPaths":{
         "coldbox":"coldbox/",
