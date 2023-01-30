@@ -15,12 +15,12 @@ jobs:
       ELASTICSEARCH_PROTOCOL: http
       ELASTICSEARCH_HOST: 127.0.0.1
       ELASTICSEARCH_PORT: 9200
-      ELASTICSEARCH_VERSION: 7.17.2
       LOGSTASH_API_URL: http://localhost:60299/logstash/api/logs
     strategy:
       fail-fast: true
       matrix:
         cfengine: ["lucee@5", "adobe@2018", "adobe@2021" ]
+        ELASTICSEARCH_VERSION: [ "7.17.2", "8.6.0" ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
 
       - name: Setup Elasticsearch
         run: |
-          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' elasticsearch:${{ env.ELASTICSEARCH_VERSION }}
+          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' elasticsearch:${{ matrix.ELASTICSEARCH_VERSION }}
 
       - name: Install Dependencies
         run: |
