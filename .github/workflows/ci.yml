@@ -40,7 +40,7 @@ jobs:
 
       - name: Setup Elasticsearch
         run: |
-          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' elasticsearch:${{ matrix.ELASTICSEARCH_VERSION }}
+          docker run -d -p "${{ env.ELASTICSEARCH_PORT }}:9200" -e 'discovery.type=single-node' -e 'xpack.security.enabled=false' elasticsearch:${{ matrix.ELASTICSEARCH_VERSION }}
 
       - name: Install Dependencies
         run: |
