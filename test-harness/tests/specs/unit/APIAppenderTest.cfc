@@ -11,27 +11,28 @@ component extends="coldbox.system.testing.BaseTestCase"{
 	function beforeAll(){
 		super.beforeAll();
 
-		variables.customIndex = "logstash-api-appender-tests";
-
-		variables.model = new logstash.models.logging.APIAppender(
+		variables.model = prepareMock( new logstash.models.logging.APIAppender(
 			"APIAppenderTest",
 			{
-				"index" : variables.customIndex,
-				"releaseVersion" : "1.0.0",
-				"userInfoUDF" : function(){
-					return {
-						"username" : "tester"
-					};
-				}
-			}
-		);
+				"applicationName"       : "testspecs",
+				"dataStream"            : "logstash-api-appender-tests",
+				"dataStreamPattern"     : "logstash-api-appender-tests",
+				"componentTemplateName" : "logstash-api-appender-component",
+				"indexTemplateName"     : "logstash-api-appender-tests",
+				"ILMPolicyName"         : "logstash-api-appender-tests",
+				"releaseVersion"        : "1.0.0",
+				"userInfoUDF"           : function(){
+											   return {
+												   "name" : "tester",
+												   "full_name" : "Test Testerson",
+												   "username" : "tester"
+											   };
+										  }
+		   }
+		) );
 
 
-		makePublic( variables.model, "getRotationalIndexName", "getRotationalIndexName" );
-
-		debug( variables.model.getRotationalIndexName() );
-
-		getInstance( "Client@cbelasticsearch" ).deleteIndex( variables.model.getRotationalIndexName() );
+		makePublic( variables.model, "getProperty", "getProperty" );
 
 		variables.model.onRegistration();
 
@@ -53,6 +54,23 @@ component extends="coldbox.system.testing.BaseTestCase"{
 	}
 
 	function afterAll(){
+		var esClient = variables.model.getClient();
+		if( esClient.dataStreamExists( variables.model.getProperty( "dataStream" ) ) ){
+			esClient.deleteDataStream( variables.model.getProperty( "dataStream" ) );
+		}
+
+		if( esClient.indexTemplateExists( variables.model.getProperty( "indexTemplateName" ) ) ){
+			esClient.deleteIndexTemplate( variables.model.getProperty( "indexTemplateName" ) );
+		}
+
+		if( esClient.componentTemplateExists( variables.model.getProperty( "componentTemplateName" ) ) ){
+			esClient.deleteComponentTemplate( variables.model.getProperty( "componentTemplateName" ) );
+		}
+
+		if( esClient.ILMPolicyExists( variables.model.getProperty( "ILMPolicyName" ) ) ){
+			esClient.deleteILMPolicy( variables.model.getProperty( "ILMPolicyName" ) );
+		}
+
 		super.afterAll();
 	}
 
@@ -61,15 +79,17 @@ component extends="coldbox.system.testing.BaseTestCase"{
 	function run(){
 
 		describe( "logstash.models.logging.APIAppender Suite", function(){
+			beforeEach( function(){
+				var searchBuilder = getWirebox().getInstance( "SearchBuilder@cbElasticsearch" ).new( variables.model.getProperty( "dataStream" ) ).setQuery( { "match_all" : {} });
+				variables.model.getClient().deleteByQuery( searchBuilder, true );
+			} )
 			it( "Can create a log message", function(){
 				// create a test error
 				variables.model.logMessage( variables.loge );
 
-				sleep( 5100 );
+				sleep( 5 );
 
-				debug( variables.model.getRotationalIndexName() );
-
-				var documents = getWirebox().getInstance( "SearchBuilder@cbElasticsearch" ).new( variables.model.getRotationalIndexName() ).setQuery( { "match_all" : {} }).execute().getHits();
+				var documents = getWirebox().getInstance( "SearchBuilder@cbElasticsearch" ).new( variables.model.getProperty( "dataStream" ) ).setQuery( { "match_all" : {} }).execute().getHits();
 
 				expect( documents.len() ).toBeGT( 0 );
 
@@ -78,13 +98,14 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				debug( logMessage  );
 
 				expect( logMessage )
-					.toHaveKey( "application" )
-					.toHaveKey( "release" )
-					.toHaveKey( "userinfo" );
+					.toHaveKey( "error" )
+					.toHaveKey( "user" )
+					.toHaveKey( "event" );
 
+				expect( logMessage.user ).toHaveKey( "info" );
 
-				expect( isJSON( logMessage.userInfo ) ).toBeTrue();
-				expect( deserializeJSON( logMessage.userinfo ) ).toHaveKey( "username" );
+				expect( isJSON( logMessage.user.info ) ).toBeTrue();
+				expect( deserializeJSON( logMessage.user.info ) ).toHaveKey( "username" );
 
 			});
 

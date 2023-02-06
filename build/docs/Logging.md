@@ -18,7 +18,7 @@ logBox = {
 			"properties" : {
 				"apiURL" : getSystemSetting( "LOGSTASH_API_URL" ),
 				"apiToken" : getSystemSetting( "LOGSTASH_API_TOKEN" ),
-				"index" : "logstash-errors-myapp",
+				"dataStream" : "logs-coldbox-errors",
 				"levelMin" : "FATAL",
 				"levelMax" : "ERROR"
 			}
@@ -28,7 +28,7 @@ logBox = {
 			"properties" : {
 				"apiURL" : getSystemSetting( "LOGSTASH_API_URL" ),
 				"apiToken" : getSystemSetting( "LOGSTASH_API_TOKEN" ),
-				"index" : "logstash-debugger-myapp",
+				"dataStrea" : "logs-coldbox-debug",
 				"levelMin" : "WARN",
 				"levelMax" : "DEBUG"
 			}
@@ -41,6 +41,7 @@ logBox = {
 
 ## Log Message Schema.
 
+The log schema used by this appender adheres to the [Elastic Common Schema](https://www.elastic.co/guide/en/ecs/current/ecs-reference.html) for event data.
 In terms of the fields stored with each log message, a number of fields are automatically appended to each logstash entry.  Depending on the type of log message, some fields may or may not be present in the stored log entry.  The following are the mapped fields in the Elasticsearch Logstash indices:
 
 ```js
@@ -68,24 +69,15 @@ In terms of the fields stored with each log message, a number of fields are auto
 			}
 		}
 	},
-	"extrainfo"   : { "type" : "text" },
-	"stacktrace"  : { "type" : "text" },
+	"error" : {
+		"extrainfo"   : { "type" : "text" },
+		"stacktrace"  : { "type" : "text" }
+	},
 	"host" : {
 		"type" : "object",
 		"properties" : {
 			"name" : { "type" : "keyword" },
 			"hostnamename" : { "type" : "keyword" }
-		}
-	},
-	"snapshot"    : {
-		"type" : "object",
-		"properties" : {
-			"template"       : { "type" : "keyword" },
-			"path"           : { "type" : "keyword" },
-			"host"           : { "type" : "keyword" },
-			"referrer"       : { "type" : "keyword" },
-			"browser"        : { "type" : "keyword" },
-			"remote_address" : { "type" : "keyword" }
 		}
 	},
 	"event" : {

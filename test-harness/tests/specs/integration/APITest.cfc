@@ -34,26 +34,21 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			variables.errorEntry = e;
 		}
 
-		var logstashAppender = createMock( "cbelasticsearch.models.logging.LogstashAppender" );
-		logstashAppender.init( "MockLogstashAppender" );
-		makePublic( logstashAppender, "getRotationalIndexName", "getRotationalIndexName" );
-
 		variables.logEntry = {
 			"application"  : "logstash-test-suite",
-			"index"        :  logstashAppender.getRotationalIndexName(),
 			"release"      : "1",
 			"type"         : "api",
 			"level"        : "ERROR" ,
 			"severity"     : 1,
 			"category"     : "tests",
-			"timestamp"    : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
+			"@timestamp"    : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
 			"component"    : getMetadata( this ).name,
 			"message"      : errorEntry.message,
 			"stacktrace"   : errorEntry.stacktrace,
 			"extrainfo"    : errorEntry.stacktrace,
 			"snapshot"     : {},
-			"userinfo"     : { "username" : "tester" },
-			"event"        : { "foo" : "bar" }
+			"userinfo"     : serializeJSON( { "username" : "tester" } ),
+			"event"        : serializeJSON( { "foo" : "bar" } )
 		};
 
 	}
@@ -152,6 +147,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 				var prc = event.getCollection( private=true );
 				expect( prc ).toHaveKey( "response" );
+				debug( prc.response );
 				expect( prc.response.getStatusCode() ).toBe( 201 );
 				debug( prc.response.getData() );
 				expect( prc.response.getData() ).toBeStruct()

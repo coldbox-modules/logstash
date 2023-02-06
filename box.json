@@ -1,6 +1,6 @@
 {
     "name":"logstash",
-    "version":"2.0.1",
+    "version":"3.0.1",
     "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/logstash/@build.version@/logstash-@build.version@.zip",
     "author":"Jon Clausen <jclausen@ortussolutions.com",
     "homepage":"https://github.com/coldbox-modules/logstash",
@@ -24,7 +24,7 @@
         "Jon Clausen <jclausen@ortussolutions.com>"
     ],
     "dependencies":{
-        "cbelasticsearch":"^2.4.0",
+        "cbelasticsearch":"be",
         "cbrestbasehandler":"^1.0.0",
         "JSONToRC":"^1.0.0"
     },

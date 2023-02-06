@@ -30,31 +30,45 @@ component {
 
         settings = {
 			// The name of this application, which will allow for grouping of logs
-			"applicationName" 	: getSystemSetting( "LOGSTASH_APPLICATION_NAME", server.coldfusion.productname eq "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name ),
+			"applicationName" 		: getSystemSetting( "LOGSTASH_APPLICATION_NAME", server.coldfusion.productname eq "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name ),
 			// Whether to enable the API endpoints to receive log messages
-			"enableAPI" 		: getSystemSetting( "LOGSTASH_ENABLE_API", true ),
+			"enableAPI" 			: getSystemSetting( "LOGSTASH_ENABLE_API", true ),
 			// Whether to automatically enabled log appenders
-			"enableAppenders" 	: getSystemSetting( "LOGSTASH_ENABLE_APPENDERS", true ),
+			"enableAppenders" 		: getSystemSetting( "LOGSTASH_ENABLE_APPENDERS", true ),
 			// The type of transmission mode for this module - `direct` or `api`
-			"transmission" 		: getSystemSetting( "LOGSTASH_TRANSMISSION_METHOD", "direct" ),
+			"transmission" 			: getSystemSetting( "LOGSTASH_TRANSMISSION_METHOD", "direct" ),
 			// only used if the transmission setting is `api`
-			"apiUrl" 			: getSystemSetting( "LOGSTASH_API_URL", "" ),
+			"apiUrl" 				: getSystemSetting( "LOGSTASH_API_URL", "" ),
 			// Regex used to whitelist remote addresses allowed to transmit to the API - by default only 127.0.0.1 is allowed to transmit messages to the API
-			"apiWhitelist" 		: getSystemSetting( "LOGSTASH_API_WHITELIST", "127.0.0.1" ),
+			"apiWhitelist" 			: getSystemSetting( "LOGSTASH_API_WHITELIST", "127.0.0.1" ),
 			// a user-provided API token - which must match the token configured on the remote API microservice leave empty if using IP whitelisting
-			"apiAuthToken" 		: getSystemSetting( "LOGSTASH_API_TOKEN", "" ),
+			"apiAuthToken" 			: getSystemSetting( "LOGSTASH_API_TOKEN", "" ),
 			// Min/Max levels for the appender
-			"levelMin" 			: getSystemSetting( "LOGSTASH_LEVEL_MIN", "FATAL" ),
-			"levelMax" 			: getSystemSetting( "LOGSTASH_LEVEL_MAX", "ERROR" ),
+			"levelMin" 				: getSystemSetting( "LOGSTASH_LEVEL_MIN", "FATAL" ),
+			"levelMax" 				: getSystemSetting( "LOGSTASH_LEVEL_MAX", "ERROR" ),
 			// A closure, which may be used in the configuration to provide custom information. Will be stored in the `userinfo` key in your logstash logs
-			"userInfoUDF"       : function(){ return {}; },
-			// A custom prefix for indices used by the module for logging
-			"indexPrefix"       : getSystemSetting( "LOGSTASH_INDEX_PREFIX", "logstash-" & lcase( REReplaceNoCase( applicationName, "[^0-9A-Z_]", "_", "all" ) ) ),
+			"userInfoUDF"       	: function(){ return {}; },
+			// The name of the data stream to use for the appender
+			"dataStream"    		: getSystemSetting( "LOGSTASH_DATASTREAM", "logs-coldbox-logstash-appender" ),
+			// The data stream pattern to use for index templates
+			"dataStreamPattern" 	: getSystemSetting( "LOGSTASH_DATASTREAMPATTERN", "logs-coldbox-*" ),
+			// The name of the ILM policy for log rotation
+			"ILMPolicyName"   		: getSystemSetting( "LOGSTASH_ILMPOLICY", "cbelasticsearch-logs" ),
+			// The name of the component template to apply
+			"componentTemplateName" : getSystemSetting( "LOGSTASH_COMPONENT_TEMPLATE", "cbelasticsearch-logs-mappings" ),
+			// The name of the index template to apply
+			"indexTemplateName" 	: getSystemSetting( "LOGSTASH_INDEX_TEMPLATE", "cbelasticsearch-logs" ),
+			// Retention of logs in number of days
+			"retentionDays"   		: getSystemSetting( "LOGSTASH_RETENTION_DAYS", 365 ),
 			// The number of shards to use for new logstash indices
-			"indexShards"       : getSystemSetting( "LOGSTASH_INDEX_SHARDS", 2 ),
+			"indexShards"       	: getSystemSetting( "LOGSTASH_INDEX_SHARDS", 1 ),
 			// The number of replicas to use for new logstash indexes
-			"indexReplicas"     : getSystemSetting( "LOGSTASH_INDEX_REPLICAS", 0 ),
-			"rotation"          : getSystemSetting( "LOGSTASH_INDEX_ROTATION", "weekly" )
+			"indexReplicas"     	: getSystemSetting( "LOGSTASH_INDEX_REPLICAS", 0 ),
+			// Backward compatiblility keys for migrating old rotational indices
+			"indexPrefix"           : getSystemSetting( "LOGSTASH_INDEX_PREFIX", "" ),
+			"migrateIndices"  		: false,
+			// Whether to throw an error when a log document fails to save
+			"throwOnError"    		: true
         };
 
         // Try to look up the release based on a box.json
@@ -105,40 +119,54 @@ component {
     /**
      * Fired when the module is registered and activated.
      */
-    function onLoad(){}
+    function onLoad(){
+		loadAppenders();
+	}
 
     /**
      * Fired when the module is unregistered and unloaded
      */
 	function onUnload(){}
 
-	function afterConfigurationLoad(){
-        if( settings.enableAppenders ){
-            loadAppenders();
-        }
-	}
+	function afterConfigurationLoad(){}
     /**
      * Load LogBox Appenders
      */
     private function loadAppenders(){
-        // Get config
-		var logBoxConfig 	= logBox.getConfig();
 
 		var appenderProperties = duplicate( settings );
-		appenderProperties.index = settings.indexPrefix;
 
-		logBox.registerAppender(
-            name 		= 'logstash_appender',
-            class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
-            properties  = appenderProperties,
-            levelMin 	= logBox.logLevels[ settings.levelMin ],
-			levelMax 	= logBox.logLevels[ settings.levelMax ]
-		);
+		if( len( appenderProperties.indexPrefix ) ){
+			appenderProperties.index = settings.indexPrefix;
+		}
 
-		var appenders = logBox.getAppendersMap( 'logstash_appender' );
-    	// Register the appender with the root loggger, and turn the logger on.
-	    var root = logBox.getRootLogger();
-	    root.addAppender( appenders[ 'logstash_appender' ] );
+
+        if( settings.enableAppenders ){
+			logBox.registerAppender(
+				name 		= 'logstash_appender',
+				class 		= settings.transmission == "direct" ? "cbelasticsearch.models.logging.LogstashAppender" : "logstash.models.logging.APIAppender",
+				properties  = appenderProperties,
+				levelMin 	= logBox.logLevels[ settings.levelMin ],
+				levelMax 	= logBox.logLevels[ settings.levelMax ]
+			);
+
+			var appenders = logBox.getAppendersMap( 'logstash_appender' );
+			// Register the appender with the root loggger, and turn the logger on.
+			var root = logBox.getRootLogger();
+			root.addAppender( appenders[ 'logstash_appender' ] );
+
+		}
+
+		// If the api
+		if( settings.enableAPI ){
+			binder.map( "EventAppender@logstash" )
+                        .to( '#this.cfmapping#.models.logging.APIEventAppender' )
+						.initWith(
+							name="logstash_api_event_appender",
+							properties=appenderProperties
+						)
+						.asSingleton();
+		}
     }
 
 }

@@ -35,15 +35,13 @@ component extends="coldbox.system.testing.BaseTestCase" model="logstash.models.l
 					variables.testError = e;
 				}
 
-				debug( testError );
-
 				variables.model.logMessage(
 					{
 						"type"         : "api",
 						"level"        : "ERROR" ,
 						"severity"     : 1,
 						"category"     : "test",
-						"timestamp"    : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
+						"@timestamp"    : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
 						"component"    : "tests",
 						"message"      : "This was an error message",
 						"stacktrace"   : testError.stacktrace
