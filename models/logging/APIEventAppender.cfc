@@ -16,9 +16,7 @@ component extends="cbelasticsearch.models.logging.LogstashAppender"{
 			);
 		}
 
-		if( !arguments.logEvent.keyExists( "@timestamp" ) ){
-			arguments.logEvent[ "@timestamp" ] = dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" )
-		}
+		variables.util.preflightLogEntry( arguments.logEvent );
 
 		newDocument().new(
 			index = arguments.dataStream,
