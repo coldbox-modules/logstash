@@ -66,7 +66,7 @@ component {
 			"indexReplicas"     	: getSystemSetting( "LOGSTASH_INDEX_REPLICAS", 0 ),
 			// Backward compatiblility keys for migrating old rotational indices
 			"indexPrefix"           : getSystemSetting( "LOGSTASH_INDEX_PREFIX", "" ),
-			"migrateIndices"  		: false,
+			"migrateIndices"  		: getSystemSetting( "LOGSTASH_MIGRATE_V2", false ),
 			// Whether to throw an error when a log document fails to save
 			"throwOnError"    		: true
         };
