@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - development
-      - master
       - main
 
 env:
@@ -100,9 +99,9 @@ jobs:
         run: |
           echo "VERSION=`cat box.json | jq '.version' -r`" >> $GITHUB_ENV
           box package set version=@build.version@+@build.number@
-          # master or snapshot
+          # main or snapshot
           echo "Github Ref is $GITHUB_REF"
-          echo "BRANCH=master" >> $GITHUB_ENV
+          echo "BRANCH=main" >> $GITHUB_ENV
           if [ $GITHUB_REF == 'refs/heads/development' ]
           then
             echo "BRANCH=development" >> $GITHUB_ENV
@@ -119,7 +118,7 @@ jobs:
           path: |
             .artifacts/**/*
       - name: Upload Binaries to S3
-        uses: jakejarvis/s3-sync-action@master
+        uses: jakejarvis/s3-sync-action@main
         with:
           args: --acl public-read
         env:

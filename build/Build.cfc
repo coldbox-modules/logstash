@@ -157,8 +157,8 @@ component{
         command( 'tokenReplace' )
             .params(
                 path = "/#variables.projectBuildDir#/**.json,/#variables.projectBuildDir#/**.cfc",
-                token = ( arguments.branch == "master" ? "@build.number@" : "+@build.number@" ),
-                replacement = ( arguments.branch == "master" ? arguments.buildID : "-snapshot" )
+                token = ( arguments.branch == "main" ? "@build.number@" : "+@build.number@" ),
+                replacement = ( arguments.branch == "main" ? arguments.buildID : "-snapshot" )
             )
             .run();
 
