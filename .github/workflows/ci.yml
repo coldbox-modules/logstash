@@ -118,7 +118,7 @@ jobs:
           path: |
             .artifacts/**/*
       - name: Upload Binaries to S3
-        uses: jakejarvis/s3-sync-action@main
+        uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read
         env:
