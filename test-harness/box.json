@@ -8,7 +8,7 @@
     },
     "devDependencies":{
         "testbox":"*",
-        "coldbox":"be"
+        "coldbox":"^6"
     },
     "installPaths":{
         "coldbox":"coldbox/",
