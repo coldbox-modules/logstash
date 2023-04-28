@@ -36,6 +36,7 @@ jobs:
 
       - name: Setup CommandBox
         uses: elpete/setup-commandbox@v1.0.0
+        
 
       - name: Setup Elasticsearch
         run: |
