@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ----
 ## [3.0.3] => Unreleased
+### Changed
+* Bump cbElasticsearch version to 3.1.0
+
+## [3.0.2] => 2023-03-28
+### Changed
+* Bump cbElasticsearch version to 3.0.2
+
 ## [3.0.1] => 2023-03-12
 ### Fixed
 * Fixed an error when attempting to migrate indices to from v2
