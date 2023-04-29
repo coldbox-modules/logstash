@@ -12,6 +12,10 @@ env:
 
 jobs:
   tests:
+    uses: ./.github/workflows/tests.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
     name: Tests
     runs-on: ubuntu-20.04
     env:
@@ -36,7 +40,7 @@ jobs:
 
       - name: Setup CommandBox
         uses: elpete/setup-commandbox@v1.0.0
-        
+
 
       - name: Setup Elasticsearch
         run: |
