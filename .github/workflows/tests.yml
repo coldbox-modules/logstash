@@ -15,6 +15,7 @@ jobs:
       ELASTICSEARCH_PROTOCOL: http
       ELASTICSEARCH_HOST: 127.0.0.1
       ELASTICSEARCH_PORT: 9200
+      LOGSTASH_API_URL: http://localhost:60299/logstash/api/logs
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
