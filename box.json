@@ -24,7 +24,7 @@
         "Jon Clausen <jclausen@ortussolutions.com>"
     ],
     "dependencies":{
-        "cbelasticsearch":"^3.1.1",
+        "cbelasticsearch":"^3.2",
         "cbrestbasehandler":"^1.0.0",
         "JSONToRC":"^1.0.0"
     },
