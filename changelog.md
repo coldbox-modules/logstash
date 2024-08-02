@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ----
 ## [Unreleased]
+### Changed
+* Remove JSONToRC module dependency as Coldbox handles this by default
+
 ## [3.0.4] => 2023-11-19
 ### Changed
 * Bump cbElasticsearch version to 3.2

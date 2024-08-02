@@ -25,8 +25,7 @@
     ],
     "dependencies":{
         "cbelasticsearch":"^3.2",
-        "cbrestbasehandler":"^1.0.0",
-        "JSONToRC":"^1.0.0"
+        "cbrestbasehandler":"^1.0.0"
     },
     "ignore":[
         "**/.*",
@@ -41,7 +40,6 @@
     },
     "installPaths":{
         "cbelasticsearch":"modules/cbelasticsearch/",
-        "cbrestbasehandler":"modules/cbrestbasehandler/",
-        "JSONToRC":"modules/JSONToRC/"
+        "cbrestbasehandler":"modules/cbrestbasehandler/"
     }
 }
