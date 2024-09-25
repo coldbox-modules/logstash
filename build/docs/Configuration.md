@@ -56,7 +56,20 @@ moduleSettings = {
 		"indexPrefix"           : getSystemSetting( "LOGSTASH_INDEX_PREFIX", "" ),
 		"migrateIndices"  		: getSystemSetting( "LOGSTASH_MIGRATE_V2", false ),
 		// Whether to throw an error when a log document fails to save
-		"throwOnError"    		: true
+		"throwOnError"    		: true,
+		// An array of detached appenders which can be used with the `writeToAppender` interception point or directly through the elasticsearch module AppenderService	
+		"detachedAppenders"     : [
+			{
+				"name" : "myCustomAppender",
+				"properties" : {
+					"retentionDays"         : 1,
+					// The name of the application which will be transmitted with the log data and used for grouping
+					"applicationName"       : "Custom Detached Appender Logs",
+					// The max shard size at which the hot phase will rollover data
+					"rolloverSize"          : "1gb"
+				}
+			}
+		]
 	}
 }
 ```

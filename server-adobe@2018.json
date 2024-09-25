@@ -10,7 +10,8 @@
         },
         "rewrites":{
             "enable":"true"
-        }
+        },
+        "webroot":"test-harness"
     },
     "openBrowser":"false"
 }

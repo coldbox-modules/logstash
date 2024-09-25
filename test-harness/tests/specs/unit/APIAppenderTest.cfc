@@ -16,7 +16,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			{
 				"applicationName"       : "testspecs",
 				"dataStream"            : "logstash-api-appender-tests",
-				"dataStreamPattern"     : "logstash-api-appender-tests",
+				"dataStreamPattern"     : "logstash-api-appender-tests*",
 				"componentTemplateName" : "logstash-api-appender-component",
 				"indexTemplateName"     : "logstash-api-appender-tests",
 				"ILMPolicyName"         : "logstash-api-appender-tests",
@@ -87,7 +87,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				// create a test error
 				variables.model.logMessage( variables.loge );
 
-				sleep( 5 );
+				sleep( 1000 );
 
 				var documents = getWirebox().getInstance( "SearchBuilder@cbElasticsearch" ).new( variables.model.getProperty( "dataStream" ) ).setQuery( { "match_all" : {} }).execute().getHits();
 

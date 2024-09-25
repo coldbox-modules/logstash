@@ -101,6 +101,25 @@ Fields typed `keyword` are not searchable, but are exact match fields.  This all
 
 _Note: There are two timestamp fields which contain the same data:  `timestamp` and `@timestamp`.  The latter is simply provided for easy automation with the default configuration for Logstash logs in Kibana.  [Read more on the ELK stack here](https://www.elastic.co/what-is/elk-stack)._
 
+## Detached Appender Logging
+
+If you [configure the `detachedAppenders` array](https://logstash.ortusbooks.com/getting-started/configuration) in your module config, you can log ad-hoc log messages directly to those data streams in Elasticsearch.   You may either [log through the `AppenderService` directly](https://cbelasticsearch.ortusbooks.com/logging) or the Logstash module provides a convenient interception point to log directly to your detached appenders.
+
+```java
+announce(
+	"writeToAppender", 
+	{
+		// The detached appender name
+		"name" : "myCustomAppender",
+		"level" : "info",
+		"message" : "Here is my custom log message",
+		"extraInfo" : {
+			"foo" : "bar"
+		}
+	}
+);
+```
+
 ## API Usage
 
 You may transmit any data directly to the logstash API, as long as it follows the mapped schema above.  You may even specify a name of the index prefix to be used in the transmission ( the actual index name will have the rotational appender timestamps applied, according to your configured rotation frequency).  This provides you flexibility in storing additional log files, which may or may not be from your CFML application. 

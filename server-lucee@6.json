@@ -1,0 +1,21 @@
+{
+    "name":"logstash-lucee@6",
+    "app":{
+        "serverHomeDirectory":".engine/lucee6",
+        "cfengine":"lucee@be"
+    },
+    "web":{
+        "http":{
+            "port":"60299"
+        },
+        "rewrites":{
+            "enable":"true"
+        },
+        "webroot":"test-harness",
+        "aliases":{
+            "/moduleroot/logstash":"./",
+            "/root":"./test-harness"
+        }
+    },
+    "openBrowser":"false"
+}

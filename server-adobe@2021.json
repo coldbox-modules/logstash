@@ -1,5 +1,5 @@
 {
-    "name":"logstash-adobe@2018",
+    "name":"logstash-adobe@2021",
     "app":{
         "serverHomeDirectory":".engine/adobe2021",
         "cfengine":"adobe@2021"
@@ -11,13 +11,14 @@
         "rewrites":{
             "enable":"true"
         },
+        "webroot":"test-harness",
         "aliases":{
-            "/moduleroot/stachebox/includes":"../includes",
-            "/stachebox/includes":"../includes"
+            "/moduleroot/logstash":"../",
+            "/root":"./test-harness"
         }
     },
     "openBrowser":"false",
-	"scripts" : {
-		"onServerInstall" : "cfpm install zip,mysql,document,feed"
-	}
+    "scripts":{
+        "onServerInstall":"cfpm install zip,debugger"
+    }
 }

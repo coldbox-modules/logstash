@@ -47,8 +47,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			"stacktrace"   : errorEntry.stacktrace,
 			"extrainfo"    : errorEntry.stacktrace,
 			"snapshot"     : {},
-			"userinfo"     : serializeJSON( { "username" : "tester" } ),
-			"event"        : serializeJSON( { "foo" : "bar" } )
+			"event"        : { "foo" : "bar" }
 		};
 
 	}
@@ -82,7 +81,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 				var event = execute(
 					route="/logstash/api/logs",
-					eventArgs=testEvent,
+					eventArguments=testEvent,
 					renderResults=false
 				);
 
@@ -102,7 +101,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 				var event = execute(
 					route="/logstash/api/logs",
-					eventArgs=testEvent,
+					eventArguments=testEvent,
 					renderResults=false
 				);
 
@@ -121,7 +120,7 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 				var event = execute(
 					route="/logstash/api/logs",
-					eventArgs=testEvent,
+					eventArguments=testEvent,
 					renderResults=false
 				);
 
@@ -138,10 +137,9 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				var testEvent = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
 
-
 				var event = execute(
 					route="/logstash/api/logs",
-					eventArgs=testEvent,
+					eventArguments=testEvent,
 					renderResults=false
 				);
 
@@ -152,7 +150,6 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				debug( prc.response.getData() );
 				expect( prc.response.getData() ).toBeStruct()
 												.toHaveKey( "accepted" );
-
 
 			} );
 

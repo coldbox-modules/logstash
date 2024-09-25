@@ -10,6 +10,11 @@
         },
         "rewrites":{
             "enable":"true"
+        },
+        "webroot":"test-harness",
+        "aliases":{
+            "/moduleroot/logstash":"./",
+            "/root":"./test-harness"
         }
     },
     "openBrowser":"false"

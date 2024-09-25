@@ -33,7 +33,7 @@ component {
 			"applicationName" 		: getSystemSetting( "LOGSTASH_APPLICATION_NAME", server.coldfusion.productname eq "Lucee" ? getApplicationSettings().name : getApplicationMetadata().name ),
 			// Whether to enable the API endpoints to receive log messages
 			"enableAPI" 			: getSystemSetting( "LOGSTASH_ENABLE_API", true ),
-			// Whether to automatically enabled log appenders
+			// Whether to automatically enable the logstash logging appender
 			"enableAppenders" 		: getSystemSetting( "LOGSTASH_ENABLE_APPENDERS", true ),
 			// The type of transmission mode for this module - `direct` or `api`
 			"transmission" 			: getSystemSetting( "LOGSTASH_TRANSMISSION_METHOD", "direct" ),
@@ -68,7 +68,9 @@ component {
 			"indexPrefix"           : getSystemSetting( "LOGSTASH_INDEX_PREFIX", "" ),
 			"migrateIndices"  		: getSystemSetting( "LOGSTASH_MIGRATE_V2", false ),
 			// Whether to throw an error when a log document fails to save
-			"throwOnError"    		: true
+			"throwOnError"    		: true,
+			// An array of detached appenders which can be used with the `writeToAppender` interception point or directly through the elasticsearch module AppenderService
+			"detachedAppenders" 	: []
         };
 
         // Try to look up the release based on a box.json
@@ -92,27 +94,15 @@ component {
 
         interceptors = [
             //API Security Interceptor
-            { class="logstash.interceptors.APISecurity" }
+            { class="logstash.interceptors.APISecurity" },
+            { class="logstash.interceptors.LogEvents" }
 		];
 
-		if( settings.enableAPI ){
-			routes = [
-				// Module Entry Point
-				{
-					pattern = "/api/logs",
-					handler = "API",
-					action = {
-						"HEAD"		: "onInvalidHTTPMethod",
-						"OPTIONS"	: "onInvalidHTTPMethod",
-						"GET"   	: "onInvalidHTTPMethod",
-						"POST"  	: "create",
-						"DELETE"	: "onInvalidHTTPMethod",
-						"PUT"   	: "create",
-						"PATCH" 	: "onInvalidHTTPMethod"
-					}
-				}
-			];
-		}
+		interceptorSettings = {
+			customInterceptionPoints : [
+				"writeToAppender"
+			]
+		};
 
     }
 
@@ -154,8 +144,16 @@ component {
 			// Register the appender with the root loggger, and turn the logger on.
 			var root = logBox.getRootLogger();
 			root.addAppender( appenders[ 'logstash_appender' ] );
-
 		}
+
+		settings.detachedAppenders.each( ( appender) => {
+			wirebox.getInstance( "AppenderService@cbelasticsearch" )
+				.createDetachedAppender(
+					appender.name,
+					appender.properties ?: {},
+					appender.class ?: "cbelasticsearch.models.logging.LogstashAppender"
+				);
+		} );
 
 		// If the api
 		if( settings.enableAPI ){

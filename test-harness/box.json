@@ -4,18 +4,19 @@
     "slug":"tester",
     "private":true,
     "description":"",
-    "dependencies":{
-    },
+    "dependencies":{},
     "devDependencies":{
         "testbox":"*",
-        "coldbox":"^6"
+        "coldbox":"7",
+        "route-visualizer":"^2.2.0+1"
     },
     "installPaths":{
         "coldbox":"coldbox/",
         "testbox":"testbox/",
         "cbelasticsearch":"modules/cbelasticsearch/",
         "cbrestbasehandler":"modules/cbrestbasehandler/",
-        "JSONToRC":"modules/JSONToRC/"
+        "JSONToRC":"modules/JSONToRC/",
+        "route-visualizer":"modules/route-visualizer/"
     },
     "testbox":{
         "runner":"http://localhost:60299/tests/runner.cfm"
