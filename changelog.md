@@ -9,9 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Added config option for detached appenders ( [introduced in `cbelasticsearch` `v3.4.0`](https://cbelasticsearch.ortusbooks.com/logging#detached-appenders) )
+* Added interceptor and custom interception to log to specific appenders ( e.g. detached )
+
 ### Changed
 
 * Remove JSONToRC module dependency as Coldbox handles this by default
+* Bumped `cbelasticsearch` dependency to `v3.4.0`
 
 ## [3.0.4] => 2023-11-19
 
