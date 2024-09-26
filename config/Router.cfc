@@ -1,7 +1,10 @@
 component {
 
 	function configure(){
-		var apiEnabled = controller.getModuleSettings( "logstash", "apiEnabled", true );
+
+		var moduleSettings = controller.getWirebox().getInstance( "coldbox:moduleSettings:logstash" );
+
+		var apiEnabled = moduleSettings.apiEnabled ?: true;
 
 		if( apiEnabled ){
 			route( "/api/logs" )
