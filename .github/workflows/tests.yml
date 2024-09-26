@@ -64,6 +64,7 @@ jobs:
         env:
           ENVIRONMENT: development
         run: |
+          cd test-harness && box install --force coldbox@${{ matrix.coldboxVersion }} && cd ../
           box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --noSaveSettings --debug
           cd ../
           curl http://127.0.0.1:60299
