@@ -1,6 +1,6 @@
 {
     "name":"logstash",
-    "version":"3.1.1",
+    "version":"3.1.2",
     "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/logstash/@build.version@/logstash-@build.version@+@build.number@.zip",
     "author":"Jon Clausen <jclausen@ortussolutions.com",
     "homepage":"https://github.com/coldbox-modules/logstash",
