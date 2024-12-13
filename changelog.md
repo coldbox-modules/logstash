@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.2] - 2024-12-13
+
 ## [3.1.1] - 2024-09-26
 
 ### Fixed
@@ -113,7 +115,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Initial release of module
 
-[Unreleased]: https://github.com/coldbox-modules/logstash/compare/v3.1.1...HEAD
+[Unreleased]: https://github.com/coldbox-modules/logstash/compare/v3.1.2...HEAD
+
+[3.1.2]: https://github.com/coldbox-modules/logstash/compare/v3.1.1...v3.1.2
 
 [3.1.1]: https://github.com/coldbox-modules/logstash/compare/v3.1.0...v3.1.1
 
