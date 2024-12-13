@@ -1,20 +1,21 @@
 /*******************************************************************************
-*	Integration Test as BDD (CF10+ or Railo 4.1 Plus)
-*
-*	Extends the integration class: coldbox.system.testing.BaseTestCase
-*
-*	so you can test your ColdBox application headlessly. The 'appMapping' points by default to
-*	the '/root' mapping created in the test folder Application.cfc.  Please note that this
-*	Application.cfc must mimic the real one in your root, including ORM settings if needed.
-*
-*	The 'execute()' method is used to execute a ColdBox event, with the following arguments
-*	* event : the name of the event
-*	* private : if the event is private or not
-*	* prePostExempt : if the event needs to be exempt of pre post interceptors
-*	* eventArguments : The struct of args to pass to the event
-*	* renderResults : Render back the results of the event
-*******************************************************************************/
-component extends="coldbox.system.testing.BaseTestCase"{
+ *	Integration Test as BDD (CF10+ or Railo 4.1 Plus)
+ *
+ *	Extends the integration class: coldbox.system.testing.BaseTestCase
+ *
+ *	so you can test your ColdBox application headlessly. The 'appMapping' points by default to
+ *	the '/root' mapping created in the test folder Application.cfc.  Please note that this
+ *	Application.cfc must mimic the real one in your root, including ORM settings if needed.
+ *
+ *	The 'execute()' method is used to execute a ColdBox event, with the following arguments
+ *	* event : the name of the event
+ *	* private : if the event is private or not
+ *	* prePostExempt : if the event needs to be exempt of pre post interceptors
+ *	* eventArguments : The struct of args to pass to the event
+ *	* renderResults : Render back the results of the event
+ *******************************************************************************/
+component extends="coldbox.system.testing.BaseTestCase" {
+
 	this.loadColdbox = true;
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
@@ -24,32 +25,31 @@ component extends="coldbox.system.testing.BaseTestCase"{
 
 		debug( application.cbController.getModuleService().isModuleRegistered( "logstash" ) );
 
-		var moduleSettings = getWirebox().getInstance( "coldbox:moduleSettings:logstash" );
+		var moduleSettings     = getWirebox().getInstance( "coldbox:moduleSettings:logstash" );
 		variables.baseSettings = duplicate( moduleSettings );
 
 		// create an error message
-		try{
+		try {
 			var a = b;
-		} catch( any e ){
+		} catch ( any e ) {
 			variables.errorEntry = e;
 		}
 
 		variables.logEntry = {
-			"application"  : "logstash-test-suite",
-			"release"      : "1",
-			"type"         : "api",
-			"level"        : "ERROR" ,
-			"severity"     : 1,
-			"category"     : "tests",
-			"@timestamp"    : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
-			"component"    : getMetadata( this ).name,
-			"message"      : errorEntry.message,
-			"stacktrace"   : errorEntry.stacktrace,
-			"extrainfo"    : errorEntry.stacktrace,
-			"snapshot"     : {},
-			"event"        : { "foo" : "bar" }
+			"application" : "logstash-test-suite",
+			"release"     : "1",
+			"type"        : "api",
+			"level"       : "ERROR",
+			"severity"    : 1,
+			"category"    : "tests",
+			"@timestamp"  : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
+			"component"   : getMetadata( this ).name,
+			"message"     : errorEntry.message,
+			"stacktrace"  : errorEntry.stacktrace,
+			"extrainfo"   : errorEntry.stacktrace,
+			"snapshot"    : {},
+			"event"       : { "foo" : "bar" }
 		};
-
 	}
 
 	function afterAll(){
@@ -60,12 +60,10 @@ component extends="coldbox.system.testing.BaseTestCase"{
 	/*********************************** BDD SUITES ***********************************/
 
 	function run(){
-
 		describe( "API Suite", function(){
-
-			beforeEach(function( currentSpec ){
+			beforeEach( function( currentSpec ){
 				setup();
-			});
+			} );
 
 			afterEach( function( currentSpec ){
 				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
@@ -75,37 +73,34 @@ component extends="coldbox.system.testing.BaseTestCase"{
 			it( "Tests that the create method will return an invalid event if the configuration is set to disable the API", function(){
 				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = false;
 
-				var testEvent = newEventArgs( "POST" );
+				var testEvent      = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
 
 
 				var event = execute(
-					route="/logstash/api/logs",
-					eventArguments=testEvent,
-					renderResults=false
+					route          = "/logstash/api/logs",
+					eventArguments = testEvent,
+					renderResults  = false
 				);
 
-				var prc = event.getCollection( private=true );
+				var prc = event.getCollection( private = true );
 				expect( prc ).toHaveKey( "response" );
 				debug( prc.response );
 				expect( prc.response.getStatusCode() ).toBe( 405 );
-
-
 			} );
 
 			xit( "Tests that the create method will return Authorization failure if the IP address is incorrect", function(){
-
-				var testEvent = newEventArgs( "POST" );
+				var testEvent      = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
 
 
 				var event = execute(
-					route="/logstash/api/logs",
-					eventArguments=testEvent,
-					renderResults=false
+					route          = "/logstash/api/logs",
+					eventArguments = testEvent,
+					renderResults  = false
 				);
 
-				var prc = event.getCollection( private=true );
+				var prc = event.getCollection( private = true );
 				expect( prc ).toHaveKey( "response" );
 				debug( prc.response );
 				expect( prc.response.getStatusCode() ).toBe( 403 );
@@ -115,16 +110,16 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
 				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = createUUID();
 
-				var testEvent = newEventArgs( "POST" );
+				var testEvent      = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
 
 				var event = execute(
-					route="/logstash/api/logs",
-					eventArguments=testEvent,
-					renderResults=false
+					route          = "/logstash/api/logs",
+					eventArguments = testEvent,
+					renderResults  = false
 				);
 
-				var prc = event.getCollection( private=true );
+				var prc = event.getCollection( private = true );
 				expect( prc ).toHaveKey( "response" );
 				debug( prc.response );
 				expect( prc.response.getStatusCode() ).toBe( 401 );
@@ -134,35 +129,29 @@ component extends="coldbox.system.testing.BaseTestCase"{
 				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).enableAPI = true;
 				getWirebox().getInstance( "coldbox:moduleSettings:logstash" ).apiAuthToken = "";
 
-				var testEvent = newEventArgs( "POST" );
+				var testEvent      = newEventArgs( "POST" );
 				testEvent.rc.entry = logEntry;
 
 				var event = execute(
-					route="/logstash/api/logs",
-					eventArguments=testEvent,
-					renderResults=false
+					route          = "/logstash/api/logs",
+					eventArguments = testEvent,
+					renderResults  = false
 				);
 
-				var prc = event.getCollection( private=true );
+				var prc = event.getCollection( private = true );
 				expect( prc ).toHaveKey( "response" );
 				debug( prc.response );
 				expect( prc.response.getStatusCode() ).toBe( 201 );
 				debug( prc.response.getData() );
-				expect( prc.response.getData() ).toBeStruct()
-												.toHaveKey( "accepted" );
-
+				expect( prc.response.getData() ).toBeStruct().toHaveKey( "accepted" );
 			} );
-
-
-		});
-
+		} );
 	}
 
-	function newEventArgs( method = "GET" ) {
-
-		//clear out all request keys
-		for( var key in request ){
-			if( findNoCase( "wirebox:", key ) ){
+	function newEventArgs( method = "GET" ){
+		// clear out all request keys
+		for ( var key in request ) {
+			if ( findNoCase( "wirebox:", key ) ) {
 				structDelete( REQUEST, key );
 			}
 		}
@@ -172,21 +161,24 @@ component extends="coldbox.system.testing.BaseTestCase"{
 		var event = getRequestContext();
 		prepareMock( event )
 			.$( "getHTTPMethod", arguments.method )
-			.$( method = "getHTTPHeader", callback = function( string name ) {
-				if ( arguments.name == "X-Requested-With" ){
-					return "XMLHttpRequest";
+			.$(
+				method   = "getHTTPHeader",
+				callback = function( string name ){
+					if ( arguments.name == "X-Requested-With" ) {
+						return "XMLHttpRequest";
+					}
+					return "";
 				}
-				return "";
-			} );
+			);
 
-		var rc = event.getCollection();
-		var prc = event.getCollection( private=true );
+		var rc  = event.getCollection();
+		var prc = event.getCollection( private = true );
 
 
 		return {
-			"event":event,
-			"rc":rc,
-			"prc":prc
+			"event" : event,
+			"rc"    : rc,
+			"prc"   : prc
 		};
 	}
 

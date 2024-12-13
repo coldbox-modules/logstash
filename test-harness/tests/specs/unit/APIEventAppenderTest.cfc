@@ -1,9 +1,9 @@
 /**
-* The base model test case will use the 'model' annotation as the instantiation path
-* and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
-* responsibility to update the model annotation instantiation path and init your model.
-*/
-component extends="coldbox.system.testing.BaseTestCase" model="logstash.models.logging.APIEventAppender"{
+ * The base model test case will use the 'model' annotation as the instantiation path
+ * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
+ * responsibility to update the model annotation instantiation path and init your model.
+ */
+component extends="coldbox.system.testing.BaseTestCase" model="logstash.models.logging.APIEventAppender" {
 
 	/*********************************** LIFE CYCLE Methods ***********************************/
 	this.loadColdbox = true;
@@ -12,10 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" model="logstash.models.l
 		super.beforeAll();
 
 		// init the model object
-		variables.model = new logstash.models.logging.APIEventAppender(
-			"EventAppenderTest",
-			{}
-		);
+		variables.model = new logstash.models.logging.APIEventAppender( "EventAppenderTest", {} );
 	}
 
 	function afterAll(){
@@ -25,32 +22,27 @@ component extends="coldbox.system.testing.BaseTestCase" model="logstash.models.l
 	/*********************************** BDD SUITES ***********************************/
 
 	function run(){
-
 		describe( "logstash.models.APIEventAppender Suite", function(){
 			it( "Can create a log message", function(){
 				// create an error for our tests
-				try{
+				try {
 					var a = b;
-				} catch( any e ){
+				} catch ( any e ) {
 					variables.testError = e;
 				}
 
-				variables.model.logMessage(
-					{
-						"type"         : "api",
-						"level"        : "ERROR" ,
-						"severity"     : 1,
-						"category"     : "test",
-						"@timestamp"    : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
-						"component"    : "tests",
-						"message"      : "This was an error message",
-						"stacktrace"   : testError.stacktrace
-					}
-				);
-			});
-
-		});
-
+				variables.model.logMessage( {
+					"type"       : "api",
+					"level"      : "ERROR",
+					"severity"   : 1,
+					"category"   : "test",
+					"@timestamp" : dateTimeFormat( now(), "yyyy-mm-dd'T'hh:nn:ssZZ" ),
+					"component"  : "tests",
+					"message"    : "This was an error message",
+					"stacktrace" : testError.stacktrace
+				} );
+			} );
+		} );
 	}
 
 }
