@@ -28,6 +28,10 @@ jobs:
             coldboxVersion: "^7"
             ELASTICSEARCH_VERSION: "8.8.1"
             experimental: true
+          - cfengine: "boxlang@1"
+            coldboxVersion: "be"
+            ELASTICSEARCH_VERSION: "8.8.1"
+            experimental: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3.2.0
@@ -40,6 +44,11 @@ jobs:
 
       - name: Setup CommandBox CLI
         uses: Ortus-Solutions/setup-commandbox@v2.0.1
+
+      - name: Update Commandbox Boxlang Module
+        if: ${{ matrix.cfengine == 'boxlang@1' }}
+        run:
+          box install --force commandbox-boxlang
 
       - name: Install Dependencies
         run: |
@@ -87,7 +96,7 @@ jobs:
 
       - name: Upload Test Results to Artifacts
         if: always()
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: test-results-${{ matrix.cfengine }}
           path: |
@@ -102,7 +111,7 @@ jobs:
 
       - name: Upload Debugging Log To Artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: Failure Debugging Info - ${{ matrix.cfengine }}
           path: |
