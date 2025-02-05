@@ -6,6 +6,7 @@ on:
     branches:
       - development
       - main
+  workflow_dispatch:
 
 env:
   MODULE_ID: logstash
@@ -21,7 +22,7 @@ jobs:
   #############################################
   build:
     name: Build & Publish
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: tests
     steps:
       - name: Checkout Repository
@@ -140,7 +141,7 @@ jobs:
   prep_next_release:
     name: Prep Next Release
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [ build ]
     steps:
       # Checkout development
